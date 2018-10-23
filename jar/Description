@@ -1,0 +1,5 @@
+1. dom4j (parsing XML)
+2. lucene-core (core lucene functions)
+3. lucene-analysis-common (analyzer)
+4. lucene-query (parsing queries)
+5. lucene-queryparser (parsing queries)
