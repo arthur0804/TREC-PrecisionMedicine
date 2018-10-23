@@ -43,7 +43,7 @@ public class SearchWithTitle {
 				
 				// alternative test query
 				// Query query_2 = parser.parse("This study explored cerebral metabolic rates of glucose");
-				 
+				  
 				// write the result into a text file			
 				// create headers
 				String header = "TOPIC_NO" + "\t" + " Q0" + "\t" + "ID" + "\t" + "RANK" + "\t" + "SCORE" + "\t" + "RUN_NAME" + "\n";
