@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class GetFilePath {
 	public static ArrayList<String> GetFilePaths(String filePath) {
 		ArrayList<String> FilePathList = new ArrayList<String>();
-		 
 		 File f = null;  
 	     f = new File(filePath);  
 	     File[] files = f.listFiles(); // get all the files   

@@ -18,10 +18,6 @@ public class Article {
 		return id;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -32,6 +28,10 @@ public class Article {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setArticleAbstract(String articleAbstract) {
