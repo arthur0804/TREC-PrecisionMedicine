@@ -25,23 +25,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.dom4j.DocumentException;
 
-public class CreateIndexWithTitle {
-
-	public static void main(String[] args) throws IOException, DocumentException {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-		String filePath = "/Users/arthur_0804/Desktop/example_data"; 
-		new CreateIndexWithoutTitle();
-		
-		//get all the URLs
-		ArrayList<String> IDAndAbstractList = GetFilePath.GetFilePaths(filePath);
-		
-		for(String str:IDAndAbstractList) {
-			// iterate through the list and create index for each file
-			CreateIndexMethod(str);
-		}
-	}
-	
+public class CreateIndexWithTitle {	
 	public static void CreateIndexMethod(String url) throws IOException, DocumentException {
 		// get a HashMap from the XML parser
 		HashMap <Integer, String> IDAndAbstract = XMLParser.ReadIDAndAbstract(url);
@@ -82,8 +66,7 @@ public class CreateIndexWithTitle {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/Users/arthur_0804/Desktop/ThesisIndexes/IndexWithTitle");
-		Date start= new Date();
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -126,9 +109,5 @@ public class CreateIndexWithTitle {
 		inWriter.close();
 		dir.close();
 		
-		Date end = new Date();
-		
-		System.out.println("indexing is done");
-		System.out.println("time taken:" + (end.getTime() - start.getTime()) + "milliseconds");
 	}
 }
