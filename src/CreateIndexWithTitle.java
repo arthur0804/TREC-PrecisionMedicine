@@ -27,6 +27,9 @@ import org.dom4j.DocumentException;
 
 public class CreateIndexWithTitle {	
 	public static void CreateIndexMethod(String url) throws IOException, DocumentException {
+		// create a HashMap to store whether duplicate document has been indexed
+		HashMap<String, Integer> DuplicateIDMap = GetDuplicateDocumentID.GetIDMap();
+		
 		// get a HashMap from the XML parser
 		HashMap <Integer, String> IDAndAbstract = XMLParser.ReadIDAndAbstract(url);
 		HashMap <Integer, String> IDAndTitle = XMLParser.ReadIDAndTitle(url);
@@ -94,15 +97,39 @@ public class CreateIndexWithTitle {
 		contentType.setStored(true);
 		
 		
-		// create and add article fields to the document object in lucene
+		// create and add article fields to the document object
 		for(int j = 0; j<articles.length; j++) {
-			Document doc = new Document();
-			doc.add(new Field("id", String.valueOf(articles[j].getId()), idType));
-			doc.add(new Field("title", articles[j].getTitle(), titleType));
-			doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
 			
-			// add documents to the index writer
-			inWriter.addDocument(doc);
+			// get current article ID for matching in the duplicate ID map
+			String MapIndex =  String.valueOf(articles[j].getId());
+			
+			if(DuplicateIDMap.get(MapIndex) != null) {
+				// the article is in the duplicate ID list
+				if(DuplicateIDMap.get(MapIndex) == 0) {
+					// 0 indicates it is now being indexed for first time
+					Document doc = new Document();
+					doc.add(new Field("id", String.valueOf(articles[j].getId()), idType));
+					doc.add(new Field("title", articles[j].getTitle(), titleType));
+					doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
+					inWriter.addDocument(doc);
+					
+					// mark as 1
+					int OccurrenceOrNot = 1;
+					DuplicateIDMap.put(MapIndex, OccurrenceOrNot);
+				}else{
+					// skip the current loop
+					continue;
+				}				
+			}else {
+				// the article is not in the duplicate ID list
+				Document doc = new Document();
+				doc.add(new Field("id", String.valueOf(articles[j].getId()), idType));
+				doc.add(new Field("title", articles[j].getTitle(), titleType));
+				doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
+				
+				// add documents to the index writer
+				inWriter.addDocument(doc);
+			}			
 		}
 		
 		inWriter.commit();

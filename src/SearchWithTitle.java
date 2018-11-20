@@ -20,6 +20,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query; 
 import org.apache.lucene.search.ScoreDoc; 
 import org.apache.lucene.search.TopDocs ;
+import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.Directory; 
 import org.apache.lucene.store.FSDirectory;
 
@@ -48,7 +49,8 @@ public class SearchWithTitle {
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + " Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
 		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/basic_query_result_withboost_2.txt"), header.getBytes(), StandardOpenOption.APPEND);
-			
+		
+		
 		// iterate through the queries list to execute
 		int topic_no = 1;
 		for(String query : queries) {

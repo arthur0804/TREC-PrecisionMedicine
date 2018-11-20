@@ -84,49 +84,43 @@ public class Main {
 		
 		/*
 		 * Check whether there are duplicate document IDs
-		 * PART 2. Check occurrence of each id
+		 * PART 2. Print out document ids with occurrences >= 2
 		 * called on Nov.20, results are in /proj/wangyue/jiamingfolder/dat/checkduplicate.txt
 		 * 
-			FileInputStream inputStream = new FileInputStream("/proj/wangyue/jiamingfolder/dat/documentidcollection.txt");
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+				FileInputStream inputStream = new FileInputStream("/proj/wangyue/jiamingfolder/dat/documentidcollection.txt");
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+	
+				// crate a hashmap to store the document id its occurrences
+				HashMap <String, Integer> DocumentOccurence = new HashMap<>();
 		
-			// crate a hashmap to store the document id its occurrences
-			HashMap <String, Integer> DocumentOccurence = new HashMap<>();
-			
-			String str = null;
-			while((str = bufferedReader.readLine()) != null)
-			{
-				if(DocumentOccurence.get(str) == null) {
-					// if the file not exist, add first
-					DocumentOccurence.put(str, 1);
-				}else {
-					// else, update its occurrences
-					int occurrence = DocumentOccurence.get(str) + 1;
-					DocumentOccurence.put(str, occurrence);
-				}			
-			// end of while	
-			}
-			bufferedReader.close();
-		
-			// write the result into text file
-			for (Entry<String, Integer> entry : DocumentOccurence.entrySet()) {
-		    	String key = entry.getKey();
-		    	int value = entry.getValue();
-		    	String record = key + "\t" + value + "\n";
-		    	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/checkduplicate.txt"), record.getBytes(), StandardOpenOption.APPEND);
-			} 
+				String str = null;
+				while((str = bufferedReader.readLine()) != null)
+				{
+					if(DocumentOccurence.get(str) == null) {
+						// if the file not exist, add first
+						DocumentOccurence.put(str, 1);
+					}else {
+						// else, update its occurrences
+						int occurrence = DocumentOccurence.get(str) + 1;
+						DocumentOccurence.put(str, occurrence);
+						String record = str + "\n";
+		    			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/printduplicateid.txt"), record.getBytes(), StandardOpenOption.APPEND);
+					}			
+				// end of while	
+				}
+				bufferedReader.close();
 		 * 	
 		 */
-
 		
 		/*
 		 * !TEST CASE!
 		 * Specific topic search: topic one
-		 * TopicOneSearch.SearchMethod();
-		 * 
-		 * 
 		 * check whether there are duplicate document IDs in the 1,000 result
+		 * 
 		 * 1. get 1,000 document IDs: /proj/wangyue/jiamingfolder/dat/topiconequery1120_did
+		 * 
+		 * 		TopicOneSearch.SearchMethod();
+		 * 
 		 * 2. checked result is in /proj/wangyue/jiamingfolder/dat/checktopiconeresultduplicate.txt
 		 * 
 		 * 		FileInputStream inputStream = new FileInputStream("/proj/wangyue/jiamingfolder/dat/topiconequery1120_did.txt");
@@ -166,28 +160,7 @@ public class Main {
 		 * 
 		 */
 		
-		FileInputStream inputStream = new FileInputStream("/proj/wangyue/jiamingfolder/dat/documentidcollection.txt");
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-	
-		// crate a hashmap to store the document id its occurrences
-		HashMap <String, Integer> DocumentOccurence = new HashMap<>();
 		
-		String str = null;
-		while((str = bufferedReader.readLine()) != null)
-		{
-			if(DocumentOccurence.get(str) == null) {
-				// if the file not exist, add first
-				DocumentOccurence.put(str, 1);
-			}else {
-				// else, update its occurrences
-				int occurrence = DocumentOccurence.get(str) + 1;
-				DocumentOccurence.put(str, occurrence);
-				String record = str + "\t" + occurrence + "\n";
-		    	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/printduplicateid.txt"), record.getBytes(), StandardOpenOption.APPEND);
-			}			
-		// end of while	
-		}
-		bufferedReader.close();
 
 	}
 }
