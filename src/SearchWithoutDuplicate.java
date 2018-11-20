@@ -24,13 +24,13 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 
-public class SearchWithTitle {
+public class SearchWithoutDuplicate {
 	public static void SearchMethod(ArrayList<String> queries) throws ParseException, IOException {
 		
 		// search for the CONTENT field (abstract text) and Title field , which is defined in CreateIndex
 		String[] fields ={"title", "content"};
 		Map<String, Float> boosts = new  HashMap();
-		boosts.put("title", (float) 1.5);
+		boosts.put("title", (float) 3.0);
 		boosts.put("content", (float) 0.5);
 		
 		// set directory of indexes
@@ -47,35 +47,36 @@ public class SearchWithTitle {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + " Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/basic_query_result_withboost_2.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/basic_query_result_withoutduplicate.txt"), header.getBytes(), StandardOpenOption.APPEND);
 			
 		// iterate through the queries list to execute
 		int topic_no = 1;
 		for(String query : queries) {
-			//Query multifieldquery = parser.parse("query");
-			Query multifieldquery = parser.parse(query);
-			
-			
-			
+			Query multifieldquery = parser.parse("query");
+			ArrayList<String> documentidlist = new ArrayList<>();
 			
 			// top 1000 results
-			TopDocs tds = searcher.search(multifieldquery, 1000);
+			TopDocs tds = searcher.search(multifieldquery, 1001);
 			// document rank in the retrieval result
 			int rank = 1; 
 			
-			for(ScoreDoc sd : tds.scoreDocs) {		
+			for(ScoreDoc sd : tds.scoreDocs) {
 				Document document = searcher.doc(sd.doc);
-						
-				String TOPIC_NO = String.valueOf(topic_no);
-				String Q0 = "0";
 				String ID = document.get("id");
-				String RANK = String.valueOf(rank);
-				String SCORE = String.valueOf(sd.score);
-				String RUN_NAME = "my_run";
-				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/basic_query_result_withboost_2.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
-						
-				rank ++;
+				
+				if(!documentidlist.contains(ID)) {
+					String TOPIC_NO = String.valueOf(topic_no);
+					String Q0 = "0";
+					String RANK = String.valueOf(rank);
+					String SCORE = String.valueOf(sd.score);
+					String RUN_NAME = "my_run";
+					String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
+					Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/basic_query_result_withoutduplicate.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+					documentidlist.add(ID);		
+					rank ++;
+				}else {
+					continue;
+				}	
 				// end of the loop for 1k documents
 			}
 		topic_no ++ ;

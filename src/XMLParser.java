@@ -1,4 +1,8 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -70,10 +74,10 @@ public class XMLParser {
          return ArticleidAndTitle;
 	}
 	
-	// return a String List of queries
-	public static ArrayList<String> ReadQueries (String url) throws DocumentException{
+	// return a String List of genes
+	public static ArrayList<String> ReadGenes (String url) throws DocumentException{
 		// create an Arraylist to store queries
-		ArrayList<String> Queries = new ArrayList<>();
+		ArrayList<String> Genes = new ArrayList<>();
 		
 		File inputFile = new File(url);
         SAXReader reader = new SAXReader();
@@ -86,12 +90,54 @@ public class XMLParser {
         // iterate the list
         for(int i = 0; i < allElements.size(); i++) {
          	 Element element = (Element) allElements.get(i);
-         	 Element disease = element.element("disease");
          	 Element gene = element.element("gene");
          	 // add into the List
-         	 String query = disease.getText() + gene.getText();
-         	 Queries.add(query);
+         	 String Gene = gene.getText();
+         	 Genes.add(Gene);
           }	         
-		return Queries;
+		return Genes;
+	}
+	
+	// return a String List of diseases
+	public static ArrayList<String> ReadDiseases (String url) throws DocumentException{
+			// create an Arraylist to store queries
+			ArrayList<String> Diseases = new ArrayList<>();
+			
+			File inputFile = new File(url);
+	        SAXReader reader = new SAXReader();
+	        Document document = reader.read( inputFile );
+	        Element rootElement = document.getRootElement();
+	        
+	        // store all the first child
+	        List allElements = rootElement.elements("topic");
+	        
+	        // iterate the list
+	        for(int i = 0; i < allElements.size(); i++) {
+	         	 Element element = (Element) allElements.get(i);
+	         	 Element disease = element.element("disease");
+	         	 // add into the List
+	         	 String Disease = disease.getText();
+	         	 Diseases.add(Disease);
+	          }	         
+			return Diseases;
+		}
+	
+	// get all the document id
+	public static void GetDocumentID (String url) throws DocumentException, IOException{
+		File inputFile = new File(url);
+        SAXReader reader = new SAXReader();
+        Document document = reader.read( inputFile );
+        Element rootElement = document.getRootElement();
+     	         
+        // store all the first child
+        List allElements = rootElement.elements("PubmedArticle");	     
+        
+        // iterate the list
+        for(int i = 0; i < allElements.size(); i++) {
+        	Element element = (Element) allElements.get(i);
+        	Element element_id = element.element("MedlineCitation").element("PMID");
+        	String log = element_id.getText() + "\n";
+        	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/documentidcollection.txt"), log.getBytes(), StandardOpenOption.APPEND);
+        }
 	}
 }
