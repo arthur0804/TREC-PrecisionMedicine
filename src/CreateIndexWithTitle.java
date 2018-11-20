@@ -69,7 +69,7 @@ public class CreateIndexWithTitle {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_new");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
