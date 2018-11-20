@@ -166,7 +166,28 @@ public class Main {
 		 * 
 		 */
 		
+		FileInputStream inputStream = new FileInputStream("/proj/wangyue/jiamingfolder/dat/documentidcollection.txt");
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+	
+		// crate a hashmap to store the document id its occurrences
+		HashMap <String, Integer> DocumentOccurence = new HashMap<>();
 		
+		String str = null;
+		while((str = bufferedReader.readLine()) != null)
+		{
+			if(DocumentOccurence.get(str) == null) {
+				// if the file not exist, add first
+				DocumentOccurence.put(str, 1);
+			}else {
+				// else, update its occurrences
+				int occurrence = DocumentOccurence.get(str) + 1;
+				DocumentOccurence.put(str, occurrence);
+				String record = str + "\t" + occurrence + "\n";
+		    	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/printduplicateid.txt"), record.getBytes(), StandardOpenOption.APPEND);
+			}			
+		// end of while	
+		}
+		bufferedReader.close();
 
 	}
 }

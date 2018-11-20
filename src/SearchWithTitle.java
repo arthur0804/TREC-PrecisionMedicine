@@ -52,11 +52,7 @@ public class SearchWithTitle {
 		// iterate through the queries list to execute
 		int topic_no = 1;
 		for(String query : queries) {
-			//Query multifieldquery = parser.parse("query");
 			Query multifieldquery = parser.parse(query);
-			
-			
-			
 			
 			// top 1000 results
 			TopDocs tds = searcher.search(multifieldquery, 1000);
