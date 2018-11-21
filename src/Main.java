@@ -29,18 +29,18 @@ public class Main {
 		 * CALL
 		 * THIS
 		 * 
-		 1. create index
-		 1.1 get file path of collections
-		 String filePath_collection = "/proj/wangyue/trec/pm/collection/medline_xml"; 
+		 // 1. create index
+		 // 1.1 get file path of collections
+		 String filePath_collection = "/proj/wangyue/trec/pm/collection/medline_xml";
 		
-		 1.2 get all the URLs in this file path
+		 // 1.2 get all the URLs in this file path
 		 ArrayList<String> filePathtList = GetFilePath.GetFilePaths(filePath_collection);
 		
-		 1.3 iterate through the list and create index for each file
+		 // 1.3 iterate through the list and create index for each file
 		 for(String str:filePathtList) {
 			CreateIndexWithTitle.CreateIndexMethod(str);
-			String log = "indexed: " + str + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/log.txt"), log.getBytes(), StandardOpenOption.APPEND);
+			String log = str + "\n";
+			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
 		 }	
 		 *
 		 */
@@ -160,19 +160,7 @@ public class Main {
 		 * 
 		 */
 		
-		 //1. create index
-		 // 1.1 get file path of collections
-		 String filePath_collection = "/proj/wangyue/trec/pm/collection/medline_xml";
-		
-		 // 1.2 get all the URLs in this file path
-		 ArrayList<String> filePathtList = GetFilePath.GetFilePaths(filePath_collection);
-		
-		 // 1.3 iterate through the list and create index for each file
-		 for(String str:filePathtList) {
-			CreateIndexWithTitle.CreateIndexMethod(str);
-			String log = str + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
-		 }	
+
 		
 
 	}
