@@ -6,7 +6,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -35,7 +34,7 @@ public class BM25Retrieval {
 				
 		// create index searcher and set BM25 similarity
 		IndexSearcher searcher = new IndexSearcher(reader);
-		searcher.setSimilarity(new BM25Similarity());
+		searcher.setSimilarity(new BM25Similarity(1.2f, 0.75f));
 				
 		// create analyzer
 		Analyzer analyzer = new StandardAnalyzer();
