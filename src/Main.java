@@ -172,7 +172,7 @@ public class Main {
 		 
 		 // 1.3 iterate through the list and create index for each file
 		 for(String str:filePathtList) {
-			CreateIndexWithTitle.CreateIndexMethod(str, DuplicateDocs);
+			DuplicateDocs = CreateIndexWithTitle.CreateIndexMethod(str, DuplicateDocs); // create index and update the duplicate docs HashMap
 			String log = str + "\n";
 			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
 		 }	

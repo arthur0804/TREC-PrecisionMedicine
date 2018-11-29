@@ -4,11 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.Path; 
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.zip.Adler32;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document; 
@@ -26,7 +24,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.dom4j.DocumentException;
 
 public class CreateIndexWithTitle {	
-	public static void CreateIndexMethod(String url, HashMap<String, Integer> DuplicateDocs) throws IOException, DocumentException {
+	public static HashMap<String, Integer> CreateIndexMethod(String url, HashMap<String, Integer> DuplicateDocs) throws IOException, DocumentException {
 		// create a HashMap to store whether duplicate document has been indexed
 		HashMap<String, Integer> DuplicateIDMap = DuplicateDocs;
 		
@@ -115,6 +113,7 @@ public class CreateIndexWithTitle {
 					
 					// mark as 1
 					int OccurrenceOrNot = 1;
+					// update the local duplicate map
 					DuplicateIDMap.put(MapIndex, OccurrenceOrNot);
 				}else{
 					// skip the current loop
@@ -136,5 +135,7 @@ public class CreateIndexWithTitle {
 		inWriter.close();
 		dir.close();
 		
+		// update the whole Duplicate Docs HashMap
+		return DuplicateIDMap;
 	}
 }
