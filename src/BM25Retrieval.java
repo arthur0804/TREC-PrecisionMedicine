@@ -29,7 +29,7 @@ import org.apache.lucene.store.FSDirectory;
 public class BM25Retrieval {
 	public static void SearchMethod(ArrayList<String> queries) throws ParseException, IOException {
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/indexes");
 		Directory dir = FSDirectory.open(indexPath);
 						
 		// create index reader

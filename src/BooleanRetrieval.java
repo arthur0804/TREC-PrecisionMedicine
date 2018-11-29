@@ -30,7 +30,7 @@ public class BooleanRetrieval {
 		// boosts.put("content", (float) 0.5);
 		
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/indexes");
 		Directory dir = FSDirectory.open(indexPath);
 				
 		// create index reader

@@ -36,9 +36,12 @@ public class Main {
 		 // 1.2 get all the URLs in this file path
 		 ArrayList<String> filePathtList = GetFilePath.GetFilePaths(filePath_collection);
 		
+		 // get the info the duplicate documents
+		 HashMap<String, Integer> DuplicateDocs = GetDuplicateDocumentID.GetIDMap();
+		 
 		 // 1.3 iterate through the list and create index for each file
 		 for(String str:filePathtList) {
-			CreateIndexWithTitle.CreateIndexMethod(str);
+			DuplicateDocs = CreateIndexWithTitle.CreateIndexMethod(str, DuplicateDocs); // create index and update the duplicate docs HashMap
 			String log = str + "\n";
 			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
 		 }	
@@ -57,14 +60,14 @@ public class Main {
 		//ArrayList<String> expanded_diseases = QueryExpansion.ExpandDisease(diseases);
 		
 		// 2.3 combine into the queries
-		// ArrayList<String> queries = new ArrayList<>();
+		//ArrayList<String> queries = new ArrayList<>();
 		// for(int i = 0; i < genes.size(); i++) {
 		//	String query = diseases.get(i) + " " + genes.get(i);
 		//	queries.add(query);
 		// }
 		
 		// 2.4 run queries
-		// BM25Retrieval.SearchMethod(queries);
+		//BooleanRetrieval.SearchMethod(queries);
 
 			
 		/*
@@ -160,21 +163,6 @@ public class Main {
 		 * 
 		 */
 		
-		 // 1. create index
-		 // 1.1 get file path of collections
-		 String filePath_collection = "/proj/wangyue/trec/pm/collection/medline_xml";
-		
-		 // 1.2 get all the URLs in this file path
-		 ArrayList<String> filePathtList = GetFilePath.GetFilePaths(filePath_collection);
-		
-		 // get the info the duplicate documents
-		 HashMap<String, Integer> DuplicateDocs = GetDuplicateDocumentID.GetIDMap();
-		 
-		 // 1.3 iterate through the list and create index for each file
-		 for(String str:filePathtList) {
-			DuplicateDocs = CreateIndexWithTitle.CreateIndexMethod(str, DuplicateDocs); // create index and update the duplicate docs HashMap
-			String log = str + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
-		 }	
+
 	}
 }
