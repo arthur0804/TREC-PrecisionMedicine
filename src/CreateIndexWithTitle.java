@@ -18,7 +18,9 @@ import org.apache.lucene.document.StoredField;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter; 
 import org.apache.lucene.index.IndexWriterConfig; 
-import org.apache.lucene.index.IndexWriterConfig.OpenMode; 
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 import org.apache.lucene.store.Directory; 
 import org.apache.lucene.store.FSDirectory;
 import org.dom4j.DocumentException;
@@ -63,11 +65,17 @@ public class CreateIndexWithTitle {
 		
 		// create an index writer configure
 		IndexWriterConfig icw = new IndexWriterConfig(analyzer); 
-		icw.setOpenMode(OpenMode.CREATE_OR_APPEND); // append mode: change CREATE to CREATE_OR_APPEND
+		// append mode: change CREATE to CREATE_OR_APPEND
+		icw.setOpenMode(OpenMode.CREATE_OR_APPEND);
+		// set BM25 similarity
+		LMDirichletSimilarity similarity = new  LMDirichletSimilarity(2000); 
+		icw.setSimilarity(similarity);
+		
+		// directory and index writer
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/indexes");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_Dirichlet");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");

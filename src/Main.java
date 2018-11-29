@@ -50,24 +50,25 @@ public class Main {
 		
 		// 2. query
 		// 2.1 file path 
-		// String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2017/topics2017.xml";
+		 String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2017/topics2017.xml";
 		// read genes and diseases
-		// ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
-		// ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
-		
+		 ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
+		 ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
+		 ArrayList<String> otherinfo = XMLParser.ReadOtherInfo(filePath_queries);
+		 
 		// 2.2 query expansion
 		//ArrayList<String> expanded_genes = QueryExpansion.ExpandGene(genes);
 		//ArrayList<String> expanded_diseases = QueryExpansion.ExpandDisease(diseases);
 		
 		// 2.3 combine into the queries
-		//ArrayList<String> queries = new ArrayList<>();
-		// for(int i = 0; i < genes.size(); i++) {
-		//	String query = diseases.get(i) + " " + genes.get(i);
-		//	queries.add(query);
-		// }
+		ArrayList<String> queries = new ArrayList<>();
+		 for(int i = 0; i < genes.size(); i++) {
+			String query = diseases.get(i) + " " + genes.get(i) + " " + otherinfo.get(i);
+			queries.add(query);
+		 }
 		
 		// 2.4 run queries
-		//BooleanRetrieval.SearchMethod(queries);
+		BM25Retrieval.SearchMethod(queries);
 
 			
 		/*
@@ -163,6 +164,5 @@ public class Main {
 		 * 
 		 */
 		
-
 	}
 }

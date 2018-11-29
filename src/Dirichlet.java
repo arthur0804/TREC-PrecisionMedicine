@@ -4,40 +4,33 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader; 
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException; 
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.queryparser.classic.QueryParser.Operator;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher; 
 import org.apache.lucene.search.Query; 
 import org.apache.lucene.search.ScoreDoc; 
 import org.apache.lucene.search.TopDocs ;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 import org.apache.lucene.store.Directory; 
 import org.apache.lucene.store.FSDirectory;
 
-public class BM25Retrieval {
+public class Dirichlet {
 	public static void SearchMethod(ArrayList<String> queries) throws ParseException, IOException {
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_Dirichlet");
 		Directory dir = FSDirectory.open(indexPath);
 						
 		// create index reader
 		IndexReader reader = DirectoryReader.open(dir);
-				
+
 		// create index searcher and set BM25 similarity
 		IndexSearcher searcher = new IndexSearcher(reader);
-		searcher.setSimilarity(new BM25Similarity(1.2f, 0.75f));
+		searcher.setSimilarity(new LMDirichletSimilarity(2000));
 				
 		// create analyzer
 		Analyzer analyzer = new StandardAnalyzer();
@@ -47,11 +40,10 @@ public class BM25Retrieval {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + " Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Result_3.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/DirichletResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		// create query parser with default field
 		QueryParser queryParser = new QueryParser("content", analyzer);
-		queryParser.setDefaultOperator(Operator.OR);
 		
 		// iterate through the queries list to execute
 		int topic_no = 1;
@@ -64,7 +56,7 @@ public class BM25Retrieval {
 			
 			// print out the query
 			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Log_3.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
+			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/DirichletLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
 			
 			// document rank in the retrieval result
 			int rank = 1; 
@@ -79,7 +71,7 @@ public class BM25Retrieval {
 				String SCORE = String.valueOf(sd.score);
 				String RUN_NAME = "my_run";
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Result_3.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/DirichletResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 						
 				rank ++;
 				// end of the loop for 1k documents

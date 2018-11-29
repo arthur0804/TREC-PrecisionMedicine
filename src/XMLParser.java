@@ -122,6 +122,34 @@ public class XMLParser {
 			return Diseases;
 		}
 	
+	// return a String List of other info
+		public static ArrayList<String> ReadOtherInfo (String url) throws DocumentException{
+				// create an Arraylist to store queries
+				ArrayList<String> OtherInfo = new ArrayList<>();
+				
+				File inputFile = new File(url);
+		        SAXReader reader = new SAXReader();
+		        Document document = reader.read( inputFile );
+		        Element rootElement = document.getRootElement();
+		        
+		        // store all the first child
+		        List allElements = rootElement.elements("topic");
+		        
+		        // iterate the list
+		        for(int i = 0; i < allElements.size(); i++) {
+		         	 Element element = (Element) allElements.get(i);
+		         	 Element other = element.element("other");
+		         	 // add into the List
+		         	 String Other = other.getText();
+		         	 if(Other.equals("None")) {
+		         		OtherInfo.add(" ");
+		         	 }else {
+		         		OtherInfo.add(Other);
+		         	 }
+		          }	         
+				return OtherInfo;
+			}
+		
 	// get all the document id
 	public static void GetDocumentID (String url) throws DocumentException, IOException{
 		File inputFile = new File(url);
