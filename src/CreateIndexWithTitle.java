@@ -26,9 +26,9 @@ import org.apache.lucene.store.FSDirectory;
 import org.dom4j.DocumentException;
 
 public class CreateIndexWithTitle {	
-	public static void CreateIndexMethod(String url) throws IOException, DocumentException {
+	public static void CreateIndexMethod(String url, HashMap<String, Integer> DuplicateDocs) throws IOException, DocumentException {
 		// create a HashMap to store whether duplicate document has been indexed
-		HashMap<String, Integer> DuplicateIDMap = GetDuplicateDocumentID.GetIDMap();
+		HashMap<String, Integer> DuplicateIDMap = DuplicateDocs;
 		
 		// get a HashMap from the XML parser
 		HashMap <Integer, String> IDAndAbstract = XMLParser.ReadIDAndAbstract(url);
@@ -69,7 +69,7 @@ public class CreateIndexWithTitle {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_new");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/indexes");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");

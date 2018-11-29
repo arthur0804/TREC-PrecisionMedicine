@@ -15,10 +15,13 @@ import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException; 
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher; 
 import org.apache.lucene.search.Query; 
 import org.apache.lucene.search.ScoreDoc; 
 import org.apache.lucene.search.TopDocs ;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.Directory; 
 import org.apache.lucene.store.FSDirectory;
@@ -41,7 +44,48 @@ public class BM25Retrieval {
 				
 		// create query parser
 		
+		// execute queries and write the result into a text file			
+		// create headers in the result log
+		String header = "TOPIC_NO" + " " + " Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Result.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
+		// create query parser with default field
+		QueryParser queryParser = new QueryParser("content", analyzer);
+		
+		// iterate through the queries list to execute
+		int topic_no = 1;
+		for(String query : queries) {
+			// final query
+			Query finalQuery = queryParser.parse(query);
+				
+			// top 1000 results
+			TopDocs tds = searcher.search(finalQuery, 1000);
+			
+			// print out the query
+			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
+			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Log.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
+			
+			// document rank in the retrieval result
+			int rank = 1; 
+			
+			for(ScoreDoc sd : tds.scoreDocs) {		
+				Document document = searcher.doc(sd.doc);
+						
+				String TOPIC_NO = String.valueOf(topic_no);
+				String Q0 = "0";
+				String ID = document.get("id");
+				String RANK = String.valueOf(rank);
+				String SCORE = String.valueOf(sd.score);
+				String RUN_NAME = "my_run";
+				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Result.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+						
+				rank ++;
+				// end of the loop for 1k documents
+			}
+		topic_no ++ ;
+		// end of the loop for 30 queries
+		}	
 		
 		
 		

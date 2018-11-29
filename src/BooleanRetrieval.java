@@ -51,7 +51,7 @@ public class BooleanRetrieval {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + " Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BooleanQuery.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BooleanRetrievalResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		
 		// iterate through the queries list to execute
@@ -68,8 +68,8 @@ public class BooleanRetrieval {
 			TopDocs tds = searcher.search(finalQuery, 1000);
 			
 			// print out the query
-			String QueryLog = finalQuery.toString();
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BooleanQueryLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
+			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
+			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BooleanRetrievalLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
 			
 			// document rank in the retrieval result
 			int rank = 1; 
@@ -84,7 +84,7 @@ public class BooleanRetrieval {
 				String SCORE = String.valueOf(sd.score);
 				String RUN_NAME = "my_run";
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BooleanQuery.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BooleanRetrievalResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 						
 				rank ++;
 				// end of the loop for 1k documents
