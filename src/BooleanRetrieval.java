@@ -11,6 +11,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException; 
 import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -44,15 +45,15 @@ public class BooleanRetrieval {
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
-		
+		titleQP.setDefaultOperator(Operator.OR);
 		// content query
 		QueryParser contentQP = new QueryParser("content", analyzer);
+		contentQP.setDefaultOperator(Operator.OR);
 		
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + " Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
 		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BooleanRetrievalResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
-		
 		
 		// iterate through the queries list to execute
 		int topic_no = 1;
