@@ -3,24 +3,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 public class XMLParser {
 	
 	// return a HashMap of <ID, Abstract>
-	public static HashMap<Integer, String> ReadIDAndAbstract(String url) throws DocumentException {
+	public static HashMap<String, String> ReadIDAndAbstract(String url) throws DocumentException {
 		// create a HashMap to store the <id, string> value
-		HashMap <Integer, String> ArticleidAndAbstract = new HashMap();
+		HashMap <String, String> ArticleidAndAbstract = new HashMap();
 		
 		File inputFile = new File(url);
         SAXReader reader = new SAXReader();
@@ -41,19 +37,19 @@ public class XMLParser {
         	if(element.element("MedlineCitation").element("Article").element("Abstract") == null) {
         		// add into the HashMap
         		String empty_abstracttext = "";
-           	 	ArticleidAndAbstract.put(Integer.parseInt(element_id.getText()), empty_abstracttext);
+           	 	ArticleidAndAbstract.put(element_id.getText(), empty_abstracttext);
         	}else {
         		Element element_abstracttext = element.element("MedlineCitation").element("Article").element("Abstract").element("AbstractText");
-        		ArticleidAndAbstract.put(Integer.parseInt(element_id.getText()), element_abstracttext.getText());
+        		ArticleidAndAbstract.put(element_id.getText(), element_abstracttext.getText());
         	}       	 		        	 
         }	         
         return ArticleidAndAbstract;
 	}
 	
 	// return a HashMap of <ID, Title>
-	public static HashMap<Integer, String> ReadIDAndTitle(String url) throws DocumentException {
+	public static HashMap<String, String> ReadIDAndTitle(String url) throws DocumentException {
 		 // create a HashMap to store the <id, string> value
-		 HashMap <Integer, String> ArticleidAndTitle = new HashMap();
+		 HashMap <String, String> ArticleidAndTitle = new HashMap();
 		
 		 File inputFile = new File(url);
          SAXReader reader = new SAXReader();
@@ -69,7 +65,7 @@ public class XMLParser {
         	 Element element_title = element.element("MedlineCitation").element("Article").element("ArticleTitle");
         	 Element element_id = element.element("MedlineCitation").element("PMID");
         	 // add into the HashMap
-        	 ArticleidAndTitle.put(Integer.parseInt(element_id.getText()), element_title.getText());	        	 
+        	 ArticleidAndTitle.put(element_id.getText(), element_title.getText());	        	 
          }	         
          return ArticleidAndTitle;
 	}

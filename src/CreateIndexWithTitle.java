@@ -31,16 +31,16 @@ public class CreateIndexWithTitle {
 		HashMap<String, Integer> DuplicateIDMap = DuplicateDocs;
 		
 		// get a HashMap from the XML parser
-		HashMap <Integer, String> IDAndAbstract = XMLParser.ReadIDAndAbstract(url);
-		HashMap <Integer, String> IDAndTitle = XMLParser.ReadIDAndTitle(url);
+		HashMap <String, String> IDAndAbstract = XMLParser.ReadIDAndAbstract(url);
+		HashMap <String, String> IDAndTitle = XMLParser.ReadIDAndTitle(url);
 		
 		// create an object array
 		Article[] articles = new Article[IDAndAbstract.size()];
 		
 		// create objects in the array by iterating the HashMap
 		int index = 0;
-		for (Entry<Integer, String> entry : IDAndAbstract.entrySet()) {
-		    int key = entry.getKey();
+		for (Entry<String, String> entry : IDAndAbstract.entrySet()) {
+			String key = entry.getKey();
 		    String value = entry.getValue();
 		    // create an object and write the ID and CONTENT into the object field
 		    articles[index] = new Article();
@@ -51,8 +51,8 @@ public class CreateIndexWithTitle {
 		
 		// add the title
 		int index_2 = 0;
-		for(Entry<Integer, String> entry : IDAndTitle.entrySet()) {
-			int key = entry.getKey();
+		for(Entry<String, String> entry : IDAndTitle.entrySet()) {
+			String key = entry.getKey();
 			String value = entry.getValue();
 			if(articles[index_2].getId() == key) {
 				articles[index_2].setTitle(value);
@@ -75,7 +75,7 @@ public class CreateIndexWithTitle {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_Dirichlet");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -89,7 +89,7 @@ public class CreateIndexWithTitle {
 		
 		// set ID field
 		FieldType idType = new FieldType();
-		idType.setIndexOptions(IndexOptions.DOCS); 
+		idType.setIndexOptions(IndexOptions.NONE); 
 		idType.setStored(true) ;
 		
 		// set Title filed
@@ -114,7 +114,7 @@ public class CreateIndexWithTitle {
 				if(DuplicateIDMap.get(MapIndex) == 0) {
 					// 0 indicates it is now being indexed for first time
 					Document doc = new Document();
-					doc.add(new Field("id", String.valueOf(articles[j].getId()), idType));
+					doc.add(new Field("id", articles[j].getId(), idType));
 					doc.add(new Field("title", articles[j].getTitle(), titleType));
 					doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
 					inWriter.addDocument(doc);
@@ -130,7 +130,7 @@ public class CreateIndexWithTitle {
 			}else {
 				// the article is not in the duplicate ID list
 				Document doc = new Document();
-				doc.add(new Field("id", String.valueOf(articles[j].getId()), idType));
+				doc.add(new Field("id", articles[j].getId(), idType));
 				doc.add(new Field("title", articles[j].getTitle(), titleType));
 				doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
 				

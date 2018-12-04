@@ -1,6 +1,6 @@
 
 public class Article {
-	private int id;
+	private String id;
 	private String title;
 	private String ArticleAbstract;
 	
@@ -8,13 +8,13 @@ public class Article {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Article(int id, String ArticleAbstract, String title) {
+	public Article(String id, String ArticleAbstract, String title) {
 		this.id = id;
 		this.ArticleAbstract = ArticleAbstract;
 		this.title = title;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -26,7 +26,7 @@ public class Article {
 		return ArticleAbstract;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

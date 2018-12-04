@@ -64,7 +64,7 @@ public class BM25Retrieval {
 			Query titleQuery = titleQP.parse(query);
 			Query contentQuery = contentQP.parse(query);
 			BooleanClause bc1 = new BooleanClause(titleQuery, Occur.SHOULD);
-			BooleanClause bc2 = new BooleanClause(contentQuery, Occur.MUST);
+			BooleanClause bc2 = new BooleanClause(contentQuery, Occur.SHOULD);
 			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
 							
 			// top 1000 results
