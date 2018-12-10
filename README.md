@@ -4,7 +4,7 @@
 The dataset is from TREC 2017 PM track, with 889 xml files and a collection of extra topics in the txt format.
 
 ## Preparation
-There are some duplicate 
+There are some duplicate documents with the same ID in the collection. The only difference is the publishing date (the changes in abstract contents are small enought to be ignored). So we just use the abstract content at the first hit. 
 
 1. Loading File Paths: __GetFilePath__
 2. Parsing XML: __XMLParser__
