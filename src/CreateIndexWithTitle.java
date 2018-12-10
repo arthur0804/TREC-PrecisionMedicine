@@ -54,7 +54,7 @@ public class CreateIndexWithTitle {
 		for(Entry<String, String> entry : IDAndTitle.entrySet()) {
 			String key = entry.getKey();
 			String value = entry.getValue();
-			if(articles[index_2].getId() == key) {
+			if(articles[index_2].getId().equals(key)) {
 				articles[index_2].setTitle(value);
 			}
 			index_2 ++;
@@ -68,14 +68,14 @@ public class CreateIndexWithTitle {
 		// append mode: change CREATE to CREATE_OR_APPEND
 		icw.setOpenMode(OpenMode.CREATE_OR_APPEND);
 		// set BM25 similarity
-		LMDirichletSimilarity similarity = new  LMDirichletSimilarity(2000); 
+		BM25Similarity similarity = new BM25Similarity(1.2f, 0.75f); 
 		icw.setSimilarity(similarity);
 		
 		// directory and index writer
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -89,42 +89,46 @@ public class CreateIndexWithTitle {
 		
 		// set ID field
 		FieldType idType = new FieldType();
-		idType.setIndexOptions(IndexOptions.NONE); 
+		idType.setIndexOptions(IndexOptions.DOCS); 
+		idType.setTokenized(false);
 		idType.setStored(true) ;
 		
 		// set Title filed
 		FieldType titleType = new FieldType();
 		titleType.setIndexOptions(IndexOptions.DOCS_AND_FREQS); 
+		titleType.setTokenized(true);
 		titleType.setStored(true) ;
 		
 		// set content field
 		FieldType contentType = new FieldType();
 		contentType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
+		contentType.setTokenized(true);
 		contentType.setStored(true);
-		
 		
 		// create and add article fields to the document object
 		for(int j = 0; j<articles.length; j++) {
 			
 			// get current article ID for matching in the duplicate ID map
-			String MapIndex =  String.valueOf(articles[j].getId());
+			String MapIndex =  articles[j].getId();
 			
 			if(DuplicateIDMap.get(MapIndex) != null) {
 				// the article is in the duplicate ID list
 				if(DuplicateIDMap.get(MapIndex) == 0) {
 					// 0 indicates it is now being indexed for first time
+					// index it
 					Document doc = new Document();
 					doc.add(new Field("id", articles[j].getId(), idType));
 					doc.add(new Field("title", articles[j].getTitle(), titleType));
 					doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
 					inWriter.addDocument(doc);
 					
-					// mark as 1
+					// after indexing, mark the occurrence as 1
 					int OccurrenceOrNot = 1;
+					
 					// update the local duplicate map
 					DuplicateIDMap.put(MapIndex, OccurrenceOrNot);
 				}else{
-					// skip the current loop
+					// else it has been indexed, so skip the current loop
 					continue;
 				}				
 			}else {

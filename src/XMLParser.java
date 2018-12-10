@@ -147,7 +147,7 @@ public class XMLParser {
 			}
 		
 	// get all the document id
-	public static void GetDocumentID (String url) throws DocumentException, IOException{
+	public static void PrintDocumentID (String url) throws DocumentException, IOException{
 		File inputFile = new File(url);
         SAXReader reader = new SAXReader();
         Document document = reader.read( inputFile );
@@ -161,7 +161,7 @@ public class XMLParser {
         	Element element = (Element) allElements.get(i);
         	Element element_id = element.element("MedlineCitation").element("PMID");
         	String log = element_id.getText() + "\n";
-        	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/documentidcollection.txt"), log.getBytes(), StandardOpenOption.APPEND);
+        	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/AllDocumentIDCollection.txt"), log.getBytes(), StandardOpenOption.APPEND);
         }
 	}
 }

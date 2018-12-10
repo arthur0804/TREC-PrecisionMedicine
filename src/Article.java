@@ -1,4 +1,3 @@
-
 public class Article {
 	private String id;
 	private String title;
@@ -35,6 +34,6 @@ public class Article {
 	}
 
 	public void setArticleAbstract(String articleAbstract) {
-		ArticleAbstract = articleAbstract;
+		this.ArticleAbstract = articleAbstract;
 	}
 }
