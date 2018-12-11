@@ -36,16 +36,16 @@ public class Main {
 		 HashMap<String, Integer> DuplicateDocs = GetDuplicateDocumentID.GetIDMap();
 		 
 		 // 1.3 iterate through the list and create index for each file
+		 int i = 0;
 		 for(String str:filePathtList) {
 			// create index and update the duplicate docs HashMap
 			DuplicateDocs = CreateIndexWithTitle.CreateIndexMethod(str, DuplicateDocs); 
 			String log = str + "\n";
 			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
+			i++;
 		 }	
-
-		 *
-		 *
-		 *
+		 String total = i + " XML files has been indexed";
+		 Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), total.getBytes(), StandardOpenOption.APPEND);
 		 *
 		 *	Create index for extra topics
 		 	// 1.1 get file path of collections
@@ -88,10 +88,24 @@ public class Main {
 		
 		// 2.4 run queries
 		//BM25Retrieval.SearchMethod(queries);
-		
-		
-		
-		
+
+		// 1.1 get file path of collections
+	 	String filePath_collection = "/proj/wangyue/trec/pm/collection/extra_abstracts";
 	
+	 	// 1.2 get all the URLs in this file path
+	 	ArrayList<String> filePathtList = GetFilePath.GetFilePaths(filePath_collection);
+
+	 	int i = 0;
+	 	// 1.3 iterate through the list and create index for each file
+	 	for(String str:filePathtList) {
+			// create index and update the duplicate docs HashMap
+			CreateIndexExtraTopics.CreateIndexMethod(str);
+			i++;
+	 	}	
+	 
+	 	// check the result
+	 	String log = i + " extra topics are indexed" + "\n";
+	 	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
+
 	}
 }

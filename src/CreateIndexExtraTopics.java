@@ -81,7 +81,7 @@ public class CreateIndexExtraTopics {
 				
 		// create an index writer configure
 		IndexWriterConfig icw = new IndexWriterConfig(analyzer); 
-		// append mode: change CREATE to CREATE_OR_APPEND
+		// append mode: APPEND
 		icw.setOpenMode(OpenMode.APPEND);
 		// set BM25 similarity
 		BM25Similarity similarity = new BM25Similarity(1.2f, 0.75f); 
