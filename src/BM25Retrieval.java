@@ -87,8 +87,7 @@ public class BM25Retrieval {
 				String SCORE = String.valueOf(sd.score);
 				String RUN_NAME = "my_run";
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Result.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
-						
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Result.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);						
 				rank ++;
 				// end of the loop for 1k documents
 			}

@@ -85,7 +85,7 @@ public class Main {
 		//String query = diseases.get(i) + " " + genes.get(i);
 		//	queries.add(query);
 		// }
-		
+		 
 		// 2.4 run queries
 		//BM25Retrieval.SearchMethod(queries);
 
