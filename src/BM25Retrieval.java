@@ -46,7 +46,7 @@ public class BM25Retrieval {
 		
 		// execute queries and write the result into a text file			
 		// create headers in the result log
-		String header = "TOPIC_NO" + " " + " Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
+		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
 		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/BM25Result.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
@@ -64,7 +64,7 @@ public class BM25Retrieval {
 			Query titleQuery = titleQP.parse(query);
 			Query contentQuery = contentQP.parse(query);
 			BooleanClause bc1 = new BooleanClause(titleQuery, Occur.SHOULD);
-			BooleanClause bc2 = new BooleanClause(contentQuery, Occur.SHOULD);
+			BooleanClause bc2 = new BooleanClause(contentQuery, Occur.MUST);
 			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
 							
 			// top 1000 results
@@ -94,9 +94,6 @@ public class BM25Retrieval {
 			}
 		topic_no ++ ;
 		// end of the loop for 30 queries
-		}	
-		
-		
-		
+		}		
 	}
 }

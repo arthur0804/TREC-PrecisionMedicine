@@ -72,7 +72,7 @@ public class Main {
 		// String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2017/topics2017.xml";
 		// read genes and diseases
 		// ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
-		 //ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
+		// ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
 		// ArrayList<String> otherinfo = XMLParser.ReadOtherInfo(filePath_queries);
 		 
 		// 2.2 query expansion
@@ -81,31 +81,14 @@ public class Main {
 		
 		// 2.3 combine into the queries
 		//ArrayList<String> queries = new ArrayList<>();
-		// for(int i = 0; i < genes.size(); i++) {
-		//	String query = diseases.get(i) + " " + genes.get(i) + " " + otherinfo.get(i);
+		//for(int i = 0; i < genes.size(); i++) {
+		//String query = diseases.get(i) + " " + genes.get(i);
 		//	queries.add(query);
 		// }
 		
 		// 2.4 run queries
 		//BM25Retrieval.SearchMethod(queries);
 
-		// 1.1 get file path of collections
-	 	String filePath_collection = "/proj/wangyue/trec/pm/collection/extra_abstracts";
-	
-	 	// 1.2 get all the URLs in this file path
-	 	ArrayList<String> filePathtList = GetFilePath.GetFilePaths(filePath_collection);
-
-	 	int i = 0;
-	 	// 1.3 iterate through the list and create index for each file
-	 	for(String str:filePathtList) {
-			// create index and update the duplicate docs HashMap
-			CreateIndexExtraTopics.CreateIndexMethod(str);
-			i++;
-	 	}	
-	 
-	 	// check the result
-	 	String log = i + " extra topics are indexed" + "\n";
-	 	Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
 
 	}
 }
