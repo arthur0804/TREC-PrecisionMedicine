@@ -127,7 +127,7 @@ public class XMLParser {
 		        SAXReader reader = new SAXReader();
 		        Document document = reader.read( inputFile );
 		        Element rootElement = document.getRootElement();
-		        
+		         
 		        // store all the first child
 		        List allElements = rootElement.elements("topic");
 		        
