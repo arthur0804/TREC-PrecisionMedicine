@@ -46,6 +46,8 @@ public class Main {
 		 }	
 		 String total = i + " XML files has been indexed";
 		 Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), total.getBytes(), StandardOpenOption.APPEND);
+		 
+		 
 		 *
 		 *	Create index for extra topics
 		 	// 1.1 get file path of collections
@@ -74,12 +76,9 @@ public class Main {
 		// ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
 		// ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
 		// ArrayList<String> otherinfo = XMLParser.ReadOtherInfo(filePath_queries);
-		 
-		// 2.2 query expansion
-		//ArrayList<String> expanded_genes = QueryExpansion.ExpandGene(genes);
-		//ArrayList<String> expanded_diseases = QueryExpansion.ExpandDisease(diseases);
+		 	
 		
-		// 2.3 combine into the queries
+		// 2.2 combine into the queries
 		//ArrayList<String> queries = new ArrayList<>();
 		//for(int i = 0; i < genes.size(); i++) {
 		//String query = diseases.get(i) + " " + genes.get(i);
