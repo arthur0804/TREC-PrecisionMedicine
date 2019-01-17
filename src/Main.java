@@ -88,6 +88,23 @@ public class Main {
 		// 2.4 run queries
 		//BM25Retrieval.SearchMethod(queries);
 
+		
+		// 2. query
+		// 2.1 file path 
+		String filePath_queries = "/pine/scr/j/i/jiaming/mesh_expanded.xml";
+		// read genes and diseases
+		ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
+		ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
+		
+		// 2.2 combine into the queries
+		ArrayList<String> queries = new ArrayList<>();
+		for(int i = 0; i < genes.size(); i++) {
+			String query = diseases.get(i) + " " + genes.get(i);
+			queries.add(query);
+		}
+				 
+		// 2.4 run queries
+		BM25Retrieval.SearchMethod(queries);
 
 	}
 }
