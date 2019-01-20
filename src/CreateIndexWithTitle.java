@@ -33,6 +33,7 @@ public class CreateIndexWithTitle {
 		// get a HashMap from the XML parser
 		HashMap <String, String> IDAndAbstract = XMLParser.ReadIDAndAbstract(url);
 		HashMap <String, String> IDAndTitle = XMLParser.ReadIDAndTitle(url);
+		HashMap <String, String> IDAndType = XMLParser.ReadIDAndType(url);
 		
 		// create an object array
 		Article[] articles = new Article[IDAndAbstract.size()];
@@ -57,7 +58,18 @@ public class CreateIndexWithTitle {
 			if(articles[index_2].getId().equals(key)) {
 				articles[index_2].setTitle(value);
 			}
-			index_2 ++;
+			index_2++;
+		}
+		
+		// add the type
+		int index_3 = 0;
+		for(Entry<String, String> entry : IDAndType.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			if(articles[index_3].getId().equals(key)) {
+				articles[index_3].setType(value);
+			}
+			index_3++;
 		}
 		
 		// create analyzer
@@ -65,8 +77,10 @@ public class CreateIndexWithTitle {
 		
 		// create an index writer configure
 		IndexWriterConfig icw = new IndexWriterConfig(analyzer); 
+		
 		// append mode: change CREATE to CREATE_OR_APPEND
 		icw.setOpenMode(OpenMode.CREATE_OR_APPEND);
+		
 		// set BM25 similarity
 		BM25Similarity similarity = new BM25Similarity(1.2f, 0.75f); 
 		icw.setSimilarity(similarity);
@@ -75,7 +89,7 @@ public class CreateIndexWithTitle {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -91,19 +105,25 @@ public class CreateIndexWithTitle {
 		FieldType idType = new FieldType();
 		idType.setIndexOptions(IndexOptions.DOCS); 
 		idType.setTokenized(false);
-		idType.setStored(true) ;
+		idType.setStored(true);
 		
 		// set Title filed
 		FieldType titleType = new FieldType();
 		titleType.setIndexOptions(IndexOptions.DOCS_AND_FREQS); 
 		titleType.setTokenized(true);
-		titleType.setStored(true) ;
+		titleType.setStored(true);
 		
 		// set content field
 		FieldType contentType = new FieldType();
 		contentType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
 		contentType.setTokenized(true);
 		contentType.setStored(true);
+		
+		// set type field
+		FieldType doctypeType = new FieldType();
+		doctypeType.setIndexOptions(IndexOptions.DOCS); 
+		doctypeType.setTokenized(false);
+		doctypeType.setStored(true);
 		
 		// create and add article fields to the document object
 		for(int j = 0; j<articles.length; j++) {
@@ -120,6 +140,7 @@ public class CreateIndexWithTitle {
 					doc.add(new Field("id", articles[j].getId(), idType));
 					doc.add(new Field("title", articles[j].getTitle(), titleType));
 					doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
+					doc.add(new Field("doctype", articles[j].getType(), doctypeType));
 					inWriter.addDocument(doc);
 					
 					// after indexing, mark the occurrence as 1
@@ -137,6 +158,7 @@ public class CreateIndexWithTitle {
 				doc.add(new Field("id", articles[j].getId(), idType));
 				doc.add(new Field("title", articles[j].getTitle(), titleType));
 				doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
+				doc.add(new Field("doctype", articles[j].getType(), doctypeType));
 				
 				// add documents to the index writer
 				inWriter.addDocument(doc);

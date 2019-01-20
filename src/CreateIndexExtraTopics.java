@@ -38,6 +38,7 @@ public class CreateIndexExtraTopics {
 			while((str = bufferedReader.readLine()) != null)
 			{
 				if(str.trim().length()>0) {
+				
 				// ">6" is because there are some lines with a length smaller than 6
 				// Most documents are well-structured but some documents have a few words after
 				// the content
@@ -72,9 +73,11 @@ public class CreateIndexExtraTopics {
 		String _title = aList.get(0);
 		// Abstract
 		String _abstract = combined_text;
-		
+		// Type
+		String _type = "ASCO/AACR";
+				
 		// new instance
-		Article article = new Article(_id, _abstract, _title);
+		Article article = new Article(_id, _abstract, _title, _type);
 		
 		// create analyzer
 		Analyzer analyzer = new StandardAnalyzer();
@@ -91,7 +94,7 @@ public class CreateIndexExtraTopics {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
 				
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -107,7 +110,7 @@ public class CreateIndexExtraTopics {
 		FieldType idType = new FieldType();
 		idType.setIndexOptions(IndexOptions.DOCS); 
 		idType.setTokenized(false);
-		idType.setStored(true) ;
+		idType.setStored(true);
 				
 		// set Title filed
 		FieldType titleType = new FieldType();
@@ -120,17 +123,24 @@ public class CreateIndexExtraTopics {
 		contentType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
 		contentType.setTokenized(true);
 		contentType.setStored(true);
+		
+		// set type field
+		FieldType doctypeType = new FieldType();
+		doctypeType.setIndexOptions(IndexOptions.DOCS); 
+		doctypeType.setTokenized(false);
+		doctypeType.setStored(true);
 				
 		// write
 		Document doc = new Document();
 		doc.add(new Field("id", article.getId(), idType));
 		doc.add(new Field("title", article.getTitle(), titleType));
 		doc.add(new Field("content", article.getArticleAbstract(), contentType));
+		doc.add(new Field("doctype", article.getType(), doctypeType));
+		
 		inWriter.addDocument(doc);
-	
 		inWriter.commit();
 		inWriter.close();
+		
 		dir.close();
-	
 	}
 }
