@@ -29,7 +29,7 @@ import org.apache.lucene.store.FSDirectory;
 public class BM25Retrieval {
 	public static void SearchMethod(ArrayList<String> queries) throws ParseException, IOException {
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
 		Directory dir = FSDirectory.open(indexPath);
 						
 		// create index reader
@@ -47,7 +47,7 @@ public class BM25Retrieval {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/MeshExpandedResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/MeshSynonymAcronymGeneResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
@@ -72,7 +72,7 @@ public class BM25Retrieval {
 			
 			// print out the query
 			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/MeshExpandedLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
+			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/MeshSynonymAcronymGeneLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
 			
 			// document rank in the retrieval result
 			int rank = 1; 
@@ -87,7 +87,7 @@ public class BM25Retrieval {
 				String SCORE = String.valueOf(sd.score);
 				String RUN_NAME = "my_run";
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/MeshExpandedResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);						
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/MeshSynonymAcronymGeneResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);						
 				rank ++;
 				// end of the loop for 1k documents
 			}

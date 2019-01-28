@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="/Users/arthur_0804/Desktop/Thesis/resources/lucene-6.0.0/analysis/common/lucene-analyzers-common-6.0.0.jar"/>
 	<classpathentry kind="lib" path="/Users/arthur_0804/Desktop/Thesis/resources/lucene-6.0.0/queryparser/lucene-queryparser-6.0.0.jar"/>
 	<classpathentry kind="lib" path="/Users/arthur_0804/Desktop/Thesis/resources/lucene-6.0.0/memory/lucene-memory-6.0.0.jar"/>
+	<classpathentry kind="lib" path="/Users/arthur_0804/Desktop/Thesis/jarfile/json-20180813.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
