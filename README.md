@@ -32,6 +32,9 @@ Simply read titles (remember to remove "Title:" for each title) and abstracts.
 Index these files.
 
 ## Query
+### Query Expansion
+
+### Run retrievals
 Create an ArrayList of queries.
 Call _BM25Retrieval.SearchMethod_ to run the queries.
 Be sure to set correct clause parameters.
