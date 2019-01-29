@@ -1,4 +1,6 @@
 # MasterThesisJiaming
+## Overview
+This system is built for the Precision Medicine track in TREC, which focuses on the scientific abstract retrieval. The system uses external knowledge bases.
 
 ## Data Description
 The dataset is from TREC 2017 PM track, with 889 xml files and a collection of extra topics in the txt format.
