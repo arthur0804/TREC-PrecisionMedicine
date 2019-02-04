@@ -1,4 +1,6 @@
 # MasterThesisJiaming
+## Overview
+This system is built for the Precision Medicine track in TREC, which focuses on the scientific abstract retrieval. The system uses external knowledge bases.
 
 ## Data Description
 The dataset is from TREC 2017 PM track, with 889 xml files and a collection of extra topics in the txt format.
@@ -30,6 +32,9 @@ Simply read titles (remember to remove "Title:" for each title) and abstracts.
 Index these files.
 
 ## Query
+### Query Expansion
+
+### Run retrievals
 Create an ArrayList of queries.
 Call _BM25Retrieval.SearchMethod_ to run the queries.
 Be sure to set correct clause parameters.

@@ -1,1 +1,4 @@
 Jar files which are used in the system.
+1. lucene-*: for implementing the IR system
+2. dom4j: for parse the XML file
+3. json: for handle the JSON file
