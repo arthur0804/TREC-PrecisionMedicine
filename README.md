@@ -33,8 +33,14 @@ Index these files.
 
 ## Query
 ### Query Expansion
+See Python scripts under the query expansion folder.
+Generate expansion terms from two aspects: disease and gene.
+Resources of knowledge bases: Wikidata, NCI, MeSH, UniProt
 
 ### Run retrievals
 Create an ArrayList of queries.
 Call _BM25Retrieval.SearchMethod_ to run the queries.
 Be sure to set correct clause parameters.
+
+## ReRanking
+Please see the ReRanking repo.
