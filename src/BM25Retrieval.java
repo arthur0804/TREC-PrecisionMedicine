@@ -38,7 +38,7 @@ public class BM25Retrieval {
 		// create index searcher and set BM25 similarity
 		IndexSearcher searcher = new IndexSearcher(reader);
 		searcher.setSimilarity(new BM25Similarity(1.2f, 0.75f));
-				
+				 
 		// create analyzer
 		Analyzer analyzer = new StandardAnalyzer();
 				
