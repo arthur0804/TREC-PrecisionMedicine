@@ -1,4 +1,4 @@
-# MasterThesisJiaming
+# Precision Medicine
 ## Overview
 This system is built for the Precision Medicine track in TREC, which focuses on the scientific abstract retrieval. The system uses external knowledge bases.
 
