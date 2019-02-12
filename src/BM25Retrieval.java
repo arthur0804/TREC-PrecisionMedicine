@@ -4,14 +4,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader; 
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException; 
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
@@ -48,6 +47,9 @@ public class BM25Retrieval {
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
 		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		
+		String header2 = "TOPIC_NO" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "TYPE" + " " +  "GENE_MENTIONS" + " " +  "DISEASE_MENTIONS" + "\n";
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult2.txt"), header2.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
@@ -86,8 +88,24 @@ public class BM25Retrieval {
 				String RANK = String.valueOf(rank);
 				String SCORE = String.valueOf(sd.score);
 				String RUN_NAME = "my_run";
+				String TYPE = document.get("doctype");
+				
+				Set<String> GeneSet = NER.JSONParser(NER.GeneNER(ID));
+				// To String
+				String GeneMentions = String.join(",", GeneSet);
+				
+				Set<String> DiseaseSet = NER.JSONParser(NER.DiseaseNER(ID));
+				// To String
+				String DiseaseMentions = String.join(",", DiseaseSet);
+				
+				// print retrieval result
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);						
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				
+				// print info for reranking
+				String NEW_RECORD_2 = TOPIC_NO + " " + ID + " " + RANK + " " + SCORE + " " + TYPE + " " + GeneMentions + " " + DiseaseMentions + "\n";
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult2.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				
 				rank ++;
 				// end of the loop for 1k documents
 			}
