@@ -73,58 +73,58 @@ public class Main {
 
 		// 2. query
 		// 2.1 file path 
-		//String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2017/topics2017.xml";
+		String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2017/topics2017.xml";
 		// read genes and diseases
-		//ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
-		//ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
+		ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
+		ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
 		
 		// 2.3 get query expansion terms
-		//String filePath_expansionterms = "/pine/scr/j/i/jiaming/mesh_expanded.xml";
-		//ArrayList<String> expanded_diseases = XMLParser.ReadExpandedDiseases(filePath_expansionterms);			
-		//ArrayList<String> expanded_genes = XMLParser.ReadExpandedGenes(filePath_expansionterms);			
+		String filePath_expansionterms_disease = "/pine/scr/j/i/jiaming/expansionterms/mesh_synonyms.xml";
+		ArrayList<String> expanded_diseases = XMLParser.ReadExpandedDiseases(filePath_expansionterms_disease);	
+		
+		String filePath_expansionterms_gene = "/pine/scr/j/i/jiaming/expansionterms/gene_synonyms.xml";
+		ArrayList<String> expanded_genes = XMLParser.ReadExpandedGenes(filePath_expansionterms_gene);			
 		
 		// 2.2 combine into the queries
-		//final String boost_constant = "^0.3";
+		final String boost_constant = "^0.3";
 		
 		// 30 queries to be executed
-		//ArrayList<String> queries = new ArrayList<>();
-		//for(int i = 0; i < genes.size(); i++) {
-			//String disease_expansionterms = expanded_diseases.get(i);
-			//String gene_expansionterms = expanded_genes.get(i);
+		ArrayList<String> queries = new ArrayList<>();
+		for(int i = 0; i < genes.size(); i++) {
+			String disease_expansionterms = expanded_diseases.get(i);
+			String gene_expansionterms = expanded_genes.get(i);
 			
 			/*
 			 * Disease part
 			 */
-			//String[] disease_expansionterms_parts = disease_expansionterms.split(" ");
+			String[] disease_expansionterms_parts = disease_expansionterms.split(" ");
 			
 			// remove duplicate terms in the query
-			//Set<String> disease_set = new HashSet<String>();
-			//for(int j = 0; j < disease_expansionterms_parts.length; j++) {
-			//	disease_set.add(disease_expansionterms_parts[j]);
-			//}
+			Set<String> disease_set = new HashSet<String>();
+			for(int j = 0; j < disease_expansionterms_parts.length; j++) {
+			disease_set.add(disease_expansionterms_parts[j]);
+			}
 			
 			// Iterate through the set to get refined query with weight assigned
-			//String disease_expansion_refined = "";
-			//for(String s : disease_set) {
-			//	disease_expansion_refined += s + boost_constant + " ";
-			//}
+			String disease_expansion_refined = "";
+			for(String s : disease_set) {
+				disease_expansion_refined += s + boost_constant + " ";
+			}
 			
 			/*
 			 * Gene part
 			 */
-			//String[] gene_expansionterms_parts = gene_expansionterms.split(" ");
-			//String gene_expansion_refined = "";
-			//for(int j = 0; j < gene_expansionterms_parts.length; j++) {
-				//gene_expansion_refined += gene_expansionterms_parts[i] + "^0.3" + " ";
-			//}
+			String[] gene_expansionterms_parts = gene_expansionterms.split(" ");
+			String gene_expansion_refined = "";
+			for(int j = 0; j < gene_expansionterms_parts.length; j++) {
+				gene_expansion_refined += gene_expansionterms_parts[j] + boost_constant + " ";
+			}
 		
-			//String query = diseases.get(i) + " " + genes.get(i) + " " + disease_expansion_refined;
-			//queries.add(query);
-		//}
+			String query = diseases.get(i) + " " + genes.get(i) + " " + disease_expansion_refined + " " + gene_expansion_refined;
+			queries.add(query);
+			}
 				 
 		// 2.4 run queries
-		//BM25Retrieval.SearchMethod(queries);
-		// NER.PrintMentions();
-	 
+		BM25Retrieval.SearchMethod(queries);
 	}
 }

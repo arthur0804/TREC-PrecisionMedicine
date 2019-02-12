@@ -104,7 +104,7 @@ public class BM25Retrieval {
 				
 				// print info for reranking
 				String NEW_RECORD_2 = TOPIC_NO + " " + ID + " " + RANK + " " + SCORE + " " + TYPE + " " + GeneMentions + " " + DiseaseMentions + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult2.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult2.txt"), NEW_RECORD_2.getBytes(), StandardOpenOption.APPEND);
 				
 				rank ++;
 				// end of the loop for 1k documents

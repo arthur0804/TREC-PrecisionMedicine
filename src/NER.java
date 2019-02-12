@@ -27,7 +27,13 @@ public class NER {
 			output = output + line;
 		}	
 		conn_Submit.disconnect();
-		output = output.substring(1,output.length()-1);
+		
+		if(output.length() > 0) {
+			output = output.substring(1,output.length()-1);
+		}else {
+			output = "";
+		}
+		
 		return output;
 	}
 	
@@ -44,7 +50,13 @@ public class NER {
 			output = output + line;
 		}	
 		conn_Submit.disconnect();
-		output = output.substring(1,output.length()-1);
+		
+		if(output.length() > 0) {
+			output = output.substring(1,output.length()-1);
+		}else {
+			output = "";
+		}
+		
 		return output;
 	}
 	
