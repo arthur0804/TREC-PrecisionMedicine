@@ -25,7 +25,7 @@ import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.Directory; 
 import org.apache.lucene.store.FSDirectory;
 
-public class BM25Retrieval {
+public class BM25RetrievalNew {
 	public static void SearchMethod(ArrayList<String> queries) throws ParseException, IOException {
 		// set directory of indexes
 		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
@@ -45,8 +45,11 @@ public class BM25Retrieval {
 		
 		// execute queries and write the result into a text file			
 		// create headers in the result log
-		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/BaselinePhraseResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		//String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
+		//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult3.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		
+		//String header2 = "TOPIC_NO" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "TYPE" + " " +  "GENE_MENTIONS" + " " +  "DISEASE_MENTIONS" + "\n";
+		//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult2.txt"), header2.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
@@ -56,8 +59,11 @@ public class BM25Retrieval {
 		contentQP.setDefaultOperator(Operator.OR);
 		
 		// iterate through the queries list to execute
-		int topic_no = 1;
-		for(String query : queries) {
+		// int topic_no = 1;
+		for(int i = 0 ; i < 11; i ++) {
+			
+			String query = queries.get(i);
+			int topic_no = i+1;
 			
 			// boolean query
 			Query titleQuery = titleQP.parse(query);
@@ -70,8 +76,8 @@ public class BM25Retrieval {
 			TopDocs tds = searcher.search(finalQuery, 1000);
 			
 			// print out the query
-			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/BaselinePhraseLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
+			//String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
+			//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
 			
 			// document rank in the retrieval result
 			int rank = 1; 
@@ -87,31 +93,38 @@ public class BM25Retrieval {
 				String RUN_NAME = "my_run";
 				String TYPE = document.get("doctype");
 				
-				//Set<String> GeneSet = NER.JSONParser(NER.GeneNER(ID));
+				Set<String> GeneSet = NER.JSONParser(NER.GeneNER(ID));
 				// To String
-				//if(GeneSet.size() == 0) {
-				//	String GeneMentions = "None";
-				//}else {
-				//	String GeneMentions = String.join(",", GeneSet);
-				//}
+				String GeneMentions = "";
+				if(GeneSet.size() == 0) {
+					GeneMentions = "None";
+				}else {
+					GeneMentions = String.join(",", GeneSet);
+				}
 				
 				
-				//Set<String> DiseaseSet = NER.JSONParser(NER.DiseaseNER(ID));
+				Set<String> DiseaseSet = NER.JSONParser(NER.DiseaseNER(ID));
 				// To String
-				//if(DiseaseSet.size() == 0) {
-				//	String DiseaseMentions = "None";
-				//}else {
-				//	String DiseaseMentions = String.join(",", DiseaseSet);
-				//}
+				String DiseaseMentions = "";
+				if(DiseaseSet.size() == 0) {
+					DiseaseMentions = "None";
+				}else {
+					DiseaseMentions = String.join(",", DiseaseSet);
+				}
+				
 				
 				// print retrieval result
-				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/BaselinePhraseResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
-					
+				//String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
+				//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult3.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				
+				// print info for reranking
+				String NEW_RECORD_2 = TOPIC_NO + " " + ID + " " + RANK + " " + SCORE + " " + TYPE + " " + GeneMentions + " " + DiseaseMentions + "\n";
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult0_10.txt"), NEW_RECORD_2.getBytes(), StandardOpenOption.APPEND);
+				
 				rank ++;
 				// end of the loop for 1k documents
 			}
-		topic_no ++ ;
+		//topic_no ++ ;
 		// end of the loop for 30 queries
 		}		
 	}

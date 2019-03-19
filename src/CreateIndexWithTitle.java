@@ -12,15 +12,11 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document; 
 import org.apache.lucene.document.Field; 
 import org.apache.lucene.document.FieldType; 
-import org.apache.lucene.document.IntPoint; 
-import org.apache.lucene.document.SortedNumericDocValuesField;
-import org.apache.lucene.document.StoredField; 
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter; 
 import org.apache.lucene.index.IndexWriterConfig; 
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.search.similarities.BM25Similarity;
-import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 import org.apache.lucene.store.Directory; 
 import org.apache.lucene.store.FSDirectory;
 import org.dom4j.DocumentException;
@@ -89,7 +85,7 @@ public class CreateIndexWithTitle {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
 		
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -109,13 +105,13 @@ public class CreateIndexWithTitle {
 		
 		// set Title filed
 		FieldType titleType = new FieldType();
-		titleType.setIndexOptions(IndexOptions.DOCS_AND_FREQS); 
+		titleType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS); 
 		titleType.setTokenized(true);
 		titleType.setStored(true);
 		
 		// set content field
 		FieldType contentType = new FieldType();
-		contentType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
+		contentType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
 		contentType.setTokenized(true);
 		contentType.setStored(true);
 		
