@@ -49,8 +49,8 @@ public class BM25Retrieval {
 		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
-		//QueryParser titleQP = new QueryParser("title", analyzer);
-		//titleQP.setDefaultOperator(Operator.OR);
+		QueryParser titleQP = new QueryParser("title", analyzer);
+		titleQP.setDefaultOperator(Operator.OR);
 		// content query
 		QueryParser contentQP = new QueryParser("content", analyzer);
 		contentQP.setDefaultOperator(Operator.OR);
@@ -60,19 +60,19 @@ public class BM25Retrieval {
 		for(String query : queries) {
 			
 			// boolean query
-			//Query titleQuery = titleQP.parse(query);
+			Query titleQuery = titleQP.parse(query);
 			Query contentQuery = contentQP.parse(query);
-			//BooleanClause bc1 = new BooleanClause(titleQuery, Occur.SHOULD);
+			BooleanClause bc1 = new BooleanClause(titleQuery, Occur.SHOULD);
 			BooleanClause bc2 = new BooleanClause(contentQuery, Occur.MUST);
-			//BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
-			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc2).build();
+			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
+			
 							
 			// top 1000 results
 			TopDocs tds = searcher.search(finalQuery, 1000);
 			
 			// print out the query
-			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
+			//String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
+			//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
 			
 			// document rank in the retrieval result
 			int rank = 1; 
@@ -87,23 +87,6 @@ public class BM25Retrieval {
 				String SCORE = String.valueOf(sd.score);
 				String RUN_NAME = "my_run";
 				String TYPE = document.get("doctype");
-				
-				//Set<String> GeneSet = NER.JSONParser(NER.GeneNER(ID));
-				// To String
-				//if(GeneSet.size() == 0) {
-				//	String GeneMentions = "None";
-				//}else {
-				//	String GeneMentions = String.join(",", GeneSet);
-				//}
-				
-				
-				//Set<String> DiseaseSet = NER.JSONParser(NER.DiseaseNER(ID));
-				// To String
-				//if(DiseaseSet.size() == 0) {
-				//	String DiseaseMentions = "None";
-				//}else {
-				//	String DiseaseMentions = String.join(",", DiseaseSet);
-				//}
 				
 				// print retrieval result
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
