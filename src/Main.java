@@ -129,7 +129,7 @@ public class Main {
 		// 2.4 run queries
 		//BM25Retrieval.SearchMethod(queries);
 		
-		TestBoostCombinations.RunTests();
+		CustomizeQuery.RunTests();
 					
 	}
 }

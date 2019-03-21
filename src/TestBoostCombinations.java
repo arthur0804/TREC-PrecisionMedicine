@@ -11,11 +11,13 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader; 
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queries.function.BoostedQuery;
 import org.apache.lucene.queryparser.classic.ParseException; 
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.IndexSearcher; 
 import org.apache.lucene.search.Query; 
 import org.apache.lucene.search.ScoreDoc; 
@@ -51,8 +53,8 @@ public class TestBoostCombinations {
 		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/combination/contentonly/D" + para1 + "G" + para2 + ".txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
-		//QueryParser titleQP = new QueryParser("title", analyzer);
-		//titleQP.setDefaultOperator(Operator.OR);
+		QueryParser titleQP = new QueryParser("title", analyzer);
+		titleQP.setDefaultOperator(Operator.OR);
 		// content query
 		QueryParser contentQP = new QueryParser("content", analyzer);
 		contentQP.setDefaultOperator(Operator.OR);
@@ -62,11 +64,14 @@ public class TestBoostCombinations {
 		for(String query : queries) {
 			
 			// boolean query
-			//Query titleQuery = titleQP.parse(query);
+			Query titleQuery = titleQP.parse(query);
 			Query contentQuery = contentQP.parse(query);
-			//BooleanClause bc1 = new BooleanClause(titleQuery, Occur.SHOULD);
+			
+			
+			BooleanClause bc1 = new BooleanClause(titleQuery, Occur.MUST);
 			BooleanClause bc2 = new BooleanClause(contentQuery, Occur.MUST);
-			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc2).build();
+			
+			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
 			
 							
 			// top 1000 results
