@@ -131,28 +131,67 @@ public class Main {
 		
 		
 		
-		 // Create index for xml files
-		 // 1. create index
-		 // 1.1 get file path of collections
-		 String filePath_collection = "/proj/wangyue/trec/pm/collection/medline_xml";
+		String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2018/topics2018.xml";
 		
-		 // 1.2 get all the URLs in this file path
-		 ArrayList<String> filePathtList = GetFilePath.GetFilePaths(filePath_collection);
-		
-		 // get the info the duplicate documents
-		 HashMap<String, Integer> DuplicateDocs = GetDuplicateDocumentID.GetIDMap();
-		 
-		 // 1.3 iterate through the list and create index for each file
-		 int i = 0;
-		 for(String str:filePathtList) {
-			// create index and update the duplicate docs HashMap
-			DuplicateDocs = CreateIndexWithTitle.CreateIndexMethod(str, DuplicateDocs); 
-			String log = str + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
-			i++;
-		 }	
-		 String total = i + " XML files has been indexed";
-		 Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), total.getBytes(), StandardOpenOption.APPEND);
-		
+		// read genes and diseases
+		ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
+		ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
+				
+		// 2.3 get query expansion terms
+		String filePath_expansion = "/pine/scr/j/i/jiaming/expansionterms/HPI-DHC-Expansion.xml";
+		ArrayList<String> expanded_diseases = XMLParser.ReadExpandedDiseases(filePath_expansion);	
+		ArrayList<String> expanded_genes = XMLParser.ReadExpandedGenes(filePath_expansion);			
+				
+		// 2.2 combine into the queries
+		final String disease_boost = "^0.1";
+		final String gene_boost = "^0.3";
+				
+		// 30 queries to be executed
+		ArrayList<String> queries = new ArrayList<>();
+		for(int i = 0; i < genes.size(); i++) {
+			
+			String query = diseases.get(i) + " " + genes.get(i) ;
+			
+			// expansion
+			String disease_expansionterms = expanded_diseases.get(i);
+			String gene_expansionterms = expanded_genes.get(i);
+					
+			/*
+			* Disease part
+			*/
+			String[] disease_expansionterms_parts = disease_expansionterms.split(" ");
+			
+			if (disease_expansionterms_parts.length != 1) {
+				String disease_expansion_boosted = "";
+				for(int j = 0; j < disease_expansionterms_parts.length; j++) {
+					disease_expansion_boosted += disease_expansionterms_parts[j] + disease_boost + " ";
+				}
+				disease_expansion_boosted = disease_expansion_boosted.trim();
+				query += " " + disease_expansion_boosted ;
+			}
+			
+			/*
+			* Gene part
+			*/
+			String[] gene_expansionterms_parts = gene_expansionterms.split(" ");
+			if (gene_expansionterms_parts.length != 1) {
+				String gene_expansion_boosted = "";
+				for(int j = 0; j < gene_expansionterms_parts.length; j++) {
+					gene_expansion_boosted += gene_expansionterms_parts[j] + gene_boost + " ";
+				}
+				gene_expansion_boosted = gene_expansion_boosted.trim();
+				
+				// replace forward slash
+				gene_expansion_boosted = gene_expansion_boosted.replaceAll("/", " ");
+				query += " " + gene_expansion_boosted;
+			}
+
+			queries.add(query);
+
+			}
+						 
+		// 2.4 run queries
+		BM25Retrieval.SearchMethod(queries);
+					
 	}
 }

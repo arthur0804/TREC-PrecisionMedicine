@@ -28,7 +28,7 @@ import org.apache.lucene.store.FSDirectory;
 public class BM25Retrieval {
 	public static void SearchMethod(ArrayList<String> queries) throws ParseException, IOException {
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
 		Directory dir = FSDirectory.open(indexPath);
 						
 		// create index reader
@@ -46,11 +46,11 @@ public class BM25Retrieval {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/BaselinePhraseResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
-		QueryParser titleQP = new QueryParser("title", analyzer);
-		titleQP.setDefaultOperator(Operator.OR);
+		//QueryParser titleQP = new QueryParser("title", analyzer);
+		//titleQP.setDefaultOperator(Operator.OR);
 		// content query
 		QueryParser contentQP = new QueryParser("content", analyzer);
 		contentQP.setDefaultOperator(Operator.OR);
@@ -60,18 +60,19 @@ public class BM25Retrieval {
 		for(String query : queries) {
 			
 			// boolean query
-			Query titleQuery = titleQP.parse(query);
+			//Query titleQuery = titleQP.parse(query);
 			Query contentQuery = contentQP.parse(query);
-			BooleanClause bc1 = new BooleanClause(titleQuery, Occur.SHOULD);
+			//BooleanClause bc1 = new BooleanClause(titleQuery, Occur.SHOULD);
 			BooleanClause bc2 = new BooleanClause(contentQuery, Occur.MUST);
-			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
+			//BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
+			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc2).build();
 							
 			// top 1000 results
 			TopDocs tds = searcher.search(finalQuery, 1000);
 			
 			// print out the query
 			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/BaselinePhraseLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
+			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
 			
 			// document rank in the retrieval result
 			int rank = 1; 
@@ -106,7 +107,7 @@ public class BM25Retrieval {
 				
 				// print retrieval result
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/BaselinePhraseResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResult.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 					
 				rank ++;
 				// end of the loop for 1k documents

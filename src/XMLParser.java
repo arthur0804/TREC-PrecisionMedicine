@@ -226,7 +226,7 @@ public class XMLParser {
         // iterate the list
         for (int i = 0; i < allElements.size(); i++) {
             Element element = (Element) allElements.get(i);
-            Element disease = element.element("disease");
+            Element disease = element.element("DiseaseSynonyms");
             // add into the List
             String Disease = disease.getText();
             Diseases.add(Disease);
@@ -251,7 +251,7 @@ public class XMLParser {
         // iterate the list
         for (int i = 0; i < allElements.size(); i++) {
             Element element = (Element) allElements.get(i);
-            Element gene = element.element("gene");
+            Element gene = element.element("GeneSynonyms");
             // add into the List
             String Gene = gene.getText();
             Genes.add(Gene);

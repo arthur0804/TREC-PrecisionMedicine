@@ -94,7 +94,7 @@ public class CreateIndexExtraTopics {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_new");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
 				
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -114,13 +114,13 @@ public class CreateIndexExtraTopics {
 				
 		// set Title filed
 		FieldType titleType = new FieldType();
-		titleType.setIndexOptions(IndexOptions.DOCS_AND_FREQS); 
+		titleType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS); 
 		titleType.setTokenized(true);
 		titleType.setStored(true) ;
 				
 		// set content field
 		FieldType contentType = new FieldType();
-		contentType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
+		contentType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
 		contentType.setTokenized(true);
 		contentType.setStored(true);
 		
