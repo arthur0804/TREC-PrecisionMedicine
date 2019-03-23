@@ -129,7 +129,61 @@ public class Main {
 		// 2.4 run queries
 		//BM25Retrieval.SearchMethod(queries);
 		
-		CustomizeQuery.RunTests();
+		String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2018/topics2018.xml";
+		
+		// read genes and diseases
+		ArrayList<String> genes = XMLParser.ReadGenes(filePath_queries);
+		ArrayList<String> diseases = XMLParser.ReadDiseases(filePath_queries);
+				
+		// 2.3 get query expansion terms
+		String filePath_expansion = "/pine/scr/j/i/jiaming/expansionterms/HPI-DHC-Expansion.xml";
+		ArrayList<String> expanded_diseases = XMLParser.ReadExpandedDiseases(filePath_expansion);	
+		ArrayList<String> expanded_genes = XMLParser.ReadExpandedGenes(filePath_expansion);	
+		
+		final String disease_boost = "^0.1"; 
+		final String gene_boost = "^0.3";
+		
+		ArrayList<String> queries = new ArrayList<>();
+		for(int m = 0; m < genes.size(); m++) {
+			
+			// boost disease with 1.5
+			String query = diseases.get(m) + genes.get(m);
+			
+			// expansion
+			String disease_expansionterms = expanded_diseases.get(m);
+			String gene_expansionterms = expanded_genes.get(m);
 					
+			/*
+			* Disease part
+			*/
+			String[] disease_expansionterms_parts = disease_expansionterms.split(" ");
+			
+			if (disease_expansionterms_parts.length != 1) {
+				String disease_expansion_boosted = "";
+				for(int k = 0; k < disease_expansionterms_parts.length; k++) {
+					disease_expansion_boosted += disease_expansionterms_parts[k] + disease_boost + " ";
+				}
+				disease_expansion_boosted = disease_expansion_boosted.trim();
+				query += " " + disease_expansion_boosted ;
+			}
+			
+			/*
+			* Gene part
+			*/
+			String[] gene_expansionterms_parts = gene_expansionterms.split(" ");
+			if (gene_expansionterms_parts.length != 1) {
+				String gene_expansion_boosted = "";
+				for(int k = 0; k < gene_expansionterms_parts.length; k++) {
+					gene_expansion_boosted += gene_expansionterms_parts[k] + gene_boost + " ";
+				}
+				gene_expansion_boosted = gene_expansion_boosted.trim();
+				
+				// replace forward slash
+				gene_expansion_boosted = gene_expansion_boosted.replaceAll("/", " ");
+				query += " " + gene_expansion_boosted;
+			}						
+			queries.add(query);
+		}
+		BM25Retrieval.SearchMethod(queries);
 	}
 }

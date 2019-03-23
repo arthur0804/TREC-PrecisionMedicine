@@ -49,7 +49,7 @@ public class CustomizeQuery {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/combination/papersettingandbooster/D" + para1 + "G" + para2 + ".txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/combination/papersetting/D" + para1 + "G" + para2 + ".txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
@@ -99,7 +99,7 @@ public class CustomizeQuery {
 				
 				// print retrieval result
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/combination/papersettingandbooster/D" + para1 + "G" + para2 + ".txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/combination/papersetting/D" + para1 + "G" + para2 + ".txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 					
 				rank ++;
 				// end of the loop for 1k documents
@@ -136,31 +136,32 @@ public class CustomizeQuery {
 		titleQP.setDefaultOperator(Operator.OR);
 		// content query
 		QueryParser contentQP = new QueryParser("content", analyzer);
-		contentQP.setDefaultOperator(Operator.OR);
-		
-		// title booster
-		
-		
-		// content booster
-		
-		
-		
+		contentQP.setDefaultOperator(Operator.OR);		
+				
 		// iterate through the queries list to execute
 		int topic_no = 1;
 		for(String query : queries) {
 			
-			// boolean query
+			// boolean query of disease and gene
 			Query titleQuery = titleQP.parse(query);
 			Query contentQuery = contentQP.parse(query);
+			// boolean query of boost words
+			Query titleQueryBoostWords = titleQP.parse(booster);
+			Query contentQueryBoostWords = contentQP.parse(booster);
 						
 			// boost title field
 			Query boostedtitleQuery = new BoostQuery(titleQuery, 2.0f);
 			Query boostedcontentQuery = new BoostQuery(contentQuery, 1.0f);
+			Query boostedtitleQueryBoostWords = new BoostQuery(titleQueryBoostWords, 2.0f);
+			Query boostedcontentQueryBoostWords = new BoostQuery(contentQueryBoostWords, 1.0f);
+			
 						
 			BooleanClause bc1 = new BooleanClause(boostedtitleQuery, Occur.MUST);
 			BooleanClause bc2 = new BooleanClause(boostedcontentQuery, Occur.MUST);
+			BooleanClause bc3 = new BooleanClause(boostedtitleQueryBoostWords, Occur.SHOULD);
+			BooleanClause bc4 = new BooleanClause(boostedcontentQueryBoostWords, Occur.SHOULD);
 						
-			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).build();
+			BooleanQuery finalQuery = new BooleanQuery.Builder().add(bc1).add(bc2).add(bc3).add(bc4).build();
 			
 							
 			// top 1000 results
@@ -225,7 +226,7 @@ public class CustomizeQuery {
 			String[] positive_boosters_array = positive_boosters.split(" ");
 			String booster = "";
 			for(int i=0; i<negative_boosters_array.length;i ++) {
-				booster += positive_boosters_array[i] + "^1 " + negative_boosters_array[i] + "^-1 ";
+				booster += positive_boosters_array[i] + "^1.0 ";
 			}
 			booster = booster.trim();
 
@@ -276,10 +277,8 @@ public class CustomizeQuery {
 							// replace forward slash
 							gene_expansion_boosted = gene_expansion_boosted.replaceAll("/", " ");
 							query += " " + gene_expansion_boosted;
-						}
-						
+						}						
 						queries.add(query);
-
 					}
 
 					// 2.4 run queries
