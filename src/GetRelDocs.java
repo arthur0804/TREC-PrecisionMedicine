@@ -32,9 +32,9 @@ public class GetRelDocs {
 	public static void GetRelevantDocuments () throws IOException, ParseException {
 		
 		// array of topics
-		int[] topic_collection = new int[30];
+		int[] topic_collection = new int[50];
 		for(int i = 0; i < topic_collection.length; i++) {
-			topic_collection[i] = i+1;
+			topic_collection[i] = i + 1;
 		}
 		
 		// iterate through the topics
@@ -44,7 +44,7 @@ public class GetRelDocs {
 			ArrayList<String> document_collection = GetTopicRelDoc(topic_no);
 			
 			// set directory of indexes
-			Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/indexes");
+			Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
 			Directory dir = FSDirectory.open(indexPath);
 					
 			// create index reader
@@ -60,7 +60,7 @@ public class GetRelDocs {
 			QueryParser queryParser = new QueryParser("id", analyzer);
 			
 			// write the result into the text file, make it into XML format
-			String url = "/proj/wangyue/jiamingfolder/dat/RelDocs/" + "Topic" + topic_no + ".txt";
+			String url = "/proj/wangyue/jiamingfolder/dat/2018RelDocs/" + topic_no + ".txt";
 			
 		
 			// start to search through the ArrayList
@@ -89,7 +89,7 @@ public class GetRelDocs {
 			}
 						
 		// write into log file	
-		String url_log = "/proj/wangyue/jiamingfolder/dat/RelDocs/log.txt";
+		String url_log = "/proj/wangyue/jiamingfolder/dat/2018RelDocs/log.txt";
 		String log = "Topic: " + topic_no + " has " + document_collection.size() + " relevant documents" + "\n";
 		Files.write(Paths.get(url_log), log.getBytes(), StandardOpenOption.APPEND);
 		// end loop of topics
@@ -100,7 +100,7 @@ public class GetRelDocs {
 	 * this method returns an ArrayList of document id from a text file
 	 */
 	public static ArrayList<String> GetTopicRelDoc (int topic_no) throws IOException{
-		FileInputStream inputStream = new FileInputStream("/proj/wangyue/jiamingfolder/dat/RelDocCollection.txt");
+		FileInputStream inputStream = new FileInputStream("/proj/wangyue/jiamingfolder/dat/2018RelDocs/2018RelDoc.txt");
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 		
 		ArrayList<String> collection = new ArrayList<>();
@@ -108,7 +108,7 @@ public class GetRelDocs {
 		String str = null;
 		while((str = bufferedReader.readLine()) != null)
 		{
-			String[] splitted = str.split("\t");
+			String[] splitted = str.split(" ");
 	        String topic = splitted[0].trim();
 	        String document_id = splitted[1].trim();
 	        // if the topic no equals the topic_no passed in, add into the ArrayList
