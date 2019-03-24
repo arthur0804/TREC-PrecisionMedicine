@@ -49,7 +49,7 @@ public class BM25Retrieval {
 		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23test.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		String header2 = "TOPIC_NO" + "\t" + "Q0" + "\t" + "ID" + "\t" + "RANK" + "\t" + "SCORE" + "\t" + "RUN_NAME" + "\t" + "Title" + "\t" + "Content" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/Mar23testwithcontent.txt"), header2.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23testwithcontent.txt"), header2.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
@@ -99,7 +99,7 @@ public class BM25Retrieval {
 				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23test.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 				
 				String NEW_RECORD2 = TOPIC_NO + "\t" + Q0 + "\t" + ID + "\t" + RANK + "\t" + SCORE + "\t" + RUN_NAME + "\t" + titletext + "\t" + contenttext + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/Mar23testwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23testwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);
 									
 				rank ++;
 				// end of the loop for 1k documents
