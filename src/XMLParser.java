@@ -153,10 +153,23 @@ public class XMLParser {
  
             	}
                 
-                descriptors = descriptors.substring(0, descriptors.length()-1);
-                qualifiers = qualifiers.substring(0, qualifiers.length()-1);
-                heading_text = descriptors + "-----" + qualifiers;
+                if (descriptors.length() > 0) {
+                	// remove the comma
+                	descriptors = descriptors.substring(0, descriptors.length()-1);
+                }
+                if (qualifiers.length() > 0 ) {
+                	// remove the comma
+                	qualifiers = qualifiers.substring(0, qualifiers.length()-1);
+                }
                 
+                if (descriptors.length() == 0 && qualifiers.length() == 0) {
+                	// no headings
+                	heading_text = "NONE";
+                }else {
+                	// connect descriptors and qualifiers
+                	heading_text = descriptors + "-----" + qualifiers;
+                }
+
                 ArticleidAndHeading.put(element_id.getText(), heading_text);
             }
         }   
