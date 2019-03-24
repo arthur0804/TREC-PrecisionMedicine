@@ -58,11 +58,9 @@ public class GetRelDocs {
 			
 			// create query parser with ID field
 			QueryParser queryParser = new QueryParser("id", analyzer);
-			
-			// write the result into the text file, make it into XML format
+
 			String url = "/proj/wangyue/jiamingfolder/dat/2018RelDocs/" + topic_no + ".txt";
-			
-		
+					
 			// start to search through the ArrayList
 			for(int j = 0; j < document_collection.size(); j++) {
 				String document_id = document_collection.get(j);
@@ -141,7 +139,7 @@ public class GetRelDocs {
 		ArrayList<String> document_collection = GetAllRelDoc();
 		
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withposheadingtype");
 		Directory dir = FSDirectory.open(indexPath);
 				
 		// create index reader
@@ -156,10 +154,8 @@ public class GetRelDocs {
 		// create query parser with ID field
 		QueryParser queryParser = new QueryParser("id", analyzer);
 		
-		// write the result into the text file, make it into XML format
 		String url = "/proj/wangyue/jiamingfolder/dat/2018RelDocs/Headings.txt";
 		
-	
 		// start to search through the ArrayList
 		for(int j = 0; j < document_collection.size(); j++) {
 			String document_id = document_collection.get(j);
@@ -183,7 +179,7 @@ public class GetRelDocs {
 		ArrayList<String> document_collection = GetAllRelDoc();
 		
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withposheadingtype");
 		Directory dir = FSDirectory.open(indexPath);
 				
 		// create index reader
@@ -198,10 +194,8 @@ public class GetRelDocs {
 		// create query parser with ID field
 		QueryParser queryParser = new QueryParser("id", analyzer);
 		
-		// write the result into the text file, make it into XML format
 		String url = "/proj/wangyue/jiamingfolder/dat/2018RelDocs/Types.txt";
-		
-	
+			
 		// start to search through the ArrayList
 		for(int j = 0; j < document_collection.size(); j++) {
 			String document_id = document_collection.get(j);

@@ -148,7 +148,6 @@ public class Main {
 	}
 	
 	public static void main(String[] args) throws IOException, DocumentException, ParseException {
-		GetRelDocs.GetRelDocHeadings();
-		GetRelDocs.GetRelDocTypes();
+		RunSearching();
 	}
 }

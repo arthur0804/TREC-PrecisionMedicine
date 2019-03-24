@@ -46,10 +46,10 @@ public class BM25Retrieval {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23test.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24test.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
-		String header2 = "TOPIC_NO" + "\t" + "Q0" + "\t" + "ID" + "\t" + "RANK" + "\t" + "SCORE" + "\t" + "RUN_NAME" + "\t" + "Title" + "\t" + "Content" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23testwithcontent.txt"), header2.getBytes(), StandardOpenOption.APPEND);
+		String header2 = "TOPIC_NO" + "\t" + "Q0" + "\t" + "ID" + "\t" + "RANK" + "\t" + "SCORE" + "\t" + "RUN_NAME" + "\t" + "Title" + "\t" + "Content" + "\t" + "Heading" + "\t" + "Type" + "\n";
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24testwithcontent.txt"), header2.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
@@ -76,7 +76,6 @@ public class BM25Retrieval {
 			// print out the query
 			String QueryLog = "The query of topic: " + String.valueOf(topic_no) + " is " + finalQuery.toString() + "\n";
 			System.out.println(QueryLog);
-			//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testLog.txt"), QueryLog.getBytes(), StandardOpenOption.APPEND);
 			
 			// document rank in the retrieval result
 			int rank = 1; 
@@ -90,16 +89,17 @@ public class BM25Retrieval {
 				String RANK = String.valueOf(rank);
 				String SCORE = String.valueOf(sd.score);
 				String RUN_NAME = "my_run";
-				//String TYPE = document.get("doctype");
+				String Type = document.get("doctype");
+				String Heading = document.get("heading");
 				String titletext = document.get("title");
 				String contenttext = document.get("content");
 				
 				// print retrieval result
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23test.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24test.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 				
-				String NEW_RECORD2 = TOPIC_NO + "\t" + Q0 + "\t" + ID + "\t" + RANK + "\t" + SCORE + "\t" + RUN_NAME + "\t" + titletext + "\t" + contenttext + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23testwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);
+				String NEW_RECORD2 = TOPIC_NO + "\t" + Q0 + "\t" + ID + "\t" + RANK + "\t" + SCORE + "\t" + RUN_NAME + "\t" + titletext + "\t" + contenttext + "\t" + Heading + "\t" + Type + "\n";
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24testwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);
 									
 				rank ++;
 				// end of the loop for 1k documents
