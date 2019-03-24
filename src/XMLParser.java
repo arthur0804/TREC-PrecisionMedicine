@@ -119,7 +119,7 @@ public class XMLParser {
     	// create a HashMap to store the <id, string> value
     	HashMap < String, String > ArticleidAndHeading = new HashMap();
 
-        File inputFile = new File("url");
+        File inputFile = new File(url);
         SAXReader reader = new SAXReader();
         Document document = reader.read(inputFile);
         Element rootElement = document.getRootElement();

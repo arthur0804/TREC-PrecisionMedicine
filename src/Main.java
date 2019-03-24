@@ -129,7 +129,7 @@ public class Main {
 		 
 		 
 		 // Create index for extra topics
-		 // 1.1 get file path of collections
+		 // 1.1 get file path of collections3
 		 String filePath_collection2 = "/proj/wangyue/trec/pm/collection/extra_abstracts";
 		
 		 // 1.2 get all the URLs in this file path
