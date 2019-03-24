@@ -97,7 +97,6 @@ public class Main {
 			}
 			
 			BM25Retrieval.SearchMethod(queries);
-
 	}
 
 	public static void RunIndexing() throws IOException, DocumentException {
@@ -121,11 +120,11 @@ public class Main {
 		 for(String str:filePathtList) {
 			// create index and update the duplicate docs HashMap
 			DuplicateDocs = CreateIndexWithTitle.CreateIndexMethod(str, DuplicateDocs); 
-			String log = str + "\n";
-			Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
+			//String log = str + "\n";
+			//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);
 			i++;
 		 }	
-		 String total = i + " XML files has been indexed";
+		 String total = i + " XML files has been indexed \n";
 		 Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), total.getBytes(), StandardOpenOption.APPEND);
 		 
 		 
@@ -149,6 +148,6 @@ public class Main {
 	}
 	
 	public static void main(String[] args) throws IOException, DocumentException, ParseException {
-		RunSearching();
+		RunIndexing();
 	}
 }

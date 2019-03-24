@@ -99,7 +99,6 @@ public class XMLParser {
                 String empty_type = "";
                 ArticleidAndType.put(element_id.getText(), empty_type);
             }else {
-            	// some articles have several "AbstractText" tags
                 Element element_type = element.element("MedlineCitation").element("Article").element("PublicationTypeList");
                 List type_list = element_type.elements("PublicationType");
                 String type_text = "";
@@ -118,9 +117,9 @@ public class XMLParser {
     // return a HashMap of <ID, Heading>
     public static HashMap<String , String> ReadIDAndHeading(String url) throws DocumentException{
     	// create a HashMap to store the <id, string> value
-        HashMap < String, String > ArticleidAndHeading = new HashMap();
+    	HashMap < String, String > ArticleidAndHeading = new HashMap();
 
-        File inputFile = new File(url);
+        File inputFile = new File("url");
         SAXReader reader = new SAXReader();
         Document document = reader.read(inputFile);
         Element rootElement = document.getRootElement();
@@ -131,23 +130,35 @@ public class XMLParser {
         	Element element = (Element) allElements.get(i);
             Element element_id = element.element("MedlineCitation").element("PMID");
         	
-            if (element.element("MedlineCitation").element("Article").element("PublicationTypeList") == null) {
+            if (element.element("MedlineCitation").element("MeshHeadingList") == null) {
                 // add into the HashMap
                 String empty_type = "";
                 ArticleidAndHeading.put(element_id.getText(), empty_type);
             }else {
-            	// some articles have several "AbstractText" tags
-                Element element_type = element.element("MedlineCitation").element("Article").element("PublicationTypeList");
-                List type_list = element_type.elements("PublicationType");
-                String type_text = "";
-                for(int j = 0; j < type_list.size(); j ++) {
-            		Element type_parts = (Element) type_list.get(j);
-            		type_text += type_parts.getText() + ",";
+                Element element_heading = element.element("MedlineCitation").element("MeshHeadingList");
+                List heading_list = element_heading.elements("MeshHeading");
+                
+                String heading_text = "";
+                String descriptors = "";
+                String qualifiers = "";
+                
+                for(int j = 0; j < heading_list.size(); j ++) {
+            		Element heading_parts = (Element) heading_list.get(j);
+            		if(heading_parts.element("DescriptorName") != null) {
+            			descriptors += heading_parts.element("DescriptorName").getText() + ",";
+            		}
+            		if(heading_parts.element("QualifierName") != null) {
+            			qualifiers += heading_parts.element("QualifierName").getText() + ",";
+            		}
+ 
             	}
-                type_text = type_text.substring(0, type_text.length()-1);
-                ArticleidAndHeading.put(element_id.getText(), type_text);
+                
+                descriptors = descriptors.substring(0, descriptors.length()-1);
+                qualifiers = qualifiers.substring(0, qualifiers.length()-1);
+                heading_text = descriptors + "-----" + qualifiers;
+                
+                ArticleidAndHeading.put(element_id.getText(), heading_text);
             }
-        	
         }   
         return ArticleidAndHeading;
     }

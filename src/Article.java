@@ -5,11 +5,8 @@ public class Article {
 	private String type;
 	private String heading;
 	
-	public Article(String id, String ArticleAbstract, String title, String type) {
-		this.id = id;
-		this.ArticleAbstract = ArticleAbstract;
-		this.title = title;
-		this.type = type;
+	public Article() {
+	
 	}
 	
 	public Article(String id, String ArticleAbstract, String title, String type, String heading) {

@@ -30,6 +30,7 @@ public class CreateIndexWithTitle {
 		HashMap <String, String> IDAndAbstract = XMLParser.ReadIDAndAbstract(url);
 		HashMap <String, String> IDAndTitle = XMLParser.ReadIDAndTitle(url);
 		HashMap <String, String> IDAndType = XMLParser.ReadIDAndType(url);
+		HashMap <String, String> IDAndHeading = XMLParser.ReadIDAndHeading(url);
 		
 		// create an object array
 		Article[] articles = new Article[IDAndAbstract.size()];
@@ -68,6 +69,17 @@ public class CreateIndexWithTitle {
 			index_3++;
 		}
 		
+		// add the MeSH heading
+		int index_4 = 0;
+		for(Entry<String, String> entry : IDAndHeading.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			if(articles[index_4].getId().equals(key)) {
+				articles[index_4].setHeading(value);
+			}
+			index_4++;
+		}
+		
 		// create analyzer
 		Analyzer analyzer = new StandardAnalyzer();
 		
@@ -85,9 +97,9 @@ public class CreateIndexWithTitle {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withposheadingtype");
 		
-		if ( !Files.isReadable(indexPath)) {
+		if (!Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
 			System.exit(1);
 		}
@@ -121,6 +133,13 @@ public class CreateIndexWithTitle {
 		doctypeType.setTokenized(false);
 		doctypeType.setStored(true);
 		
+		// set heading filed
+		FieldType headingType = new FieldType();
+		headingType.setIndexOptions(IndexOptions.DOCS); 
+		headingType.setTokenized(false);
+		headingType.setStored(true);
+		
+		
 		// create and add article fields to the document object
 		for(int j = 0; j<articles.length; j++) {
 			
@@ -137,6 +156,8 @@ public class CreateIndexWithTitle {
 					doc.add(new Field("title", articles[j].getTitle(), titleType));
 					doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
 					doc.add(new Field("doctype", articles[j].getType(), doctypeType));
+					doc.add(new Field("heading", articles[j].getHeading(), headingType));
+					
 					inWriter.addDocument(doc);
 					
 					// after indexing, mark the occurrence as 1
@@ -155,6 +176,7 @@ public class CreateIndexWithTitle {
 				doc.add(new Field("title", articles[j].getTitle(), titleType));
 				doc.add(new Field("content", articles[j].getArticleAbstract(), contentType));
 				doc.add(new Field("doctype", articles[j].getType(), doctypeType));
+				doc.add(new Field("heading", articles[j].getHeading(), headingType));
 				
 				// add documents to the index writer
 				inWriter.addDocument(doc);

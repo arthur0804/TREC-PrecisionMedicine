@@ -75,9 +75,11 @@ public class CreateIndexExtraTopics {
 		String _abstract = combined_text;
 		// Type
 		String _type = "ASCO/AACR";
+		// heading
+		String _heading = "NONE";
 				
 		// new instance
-		Article article = new Article(_id, _abstract, _title, _type);
+		Article article = new Article(_id, _abstract, _title, _type, _heading);
 		
 		// create analyzer
 		Analyzer analyzer = new StandardAnalyzer();
@@ -94,7 +96,7 @@ public class CreateIndexExtraTopics {
 		Directory dir = null; 
 		IndexWriter inWriter = null;
 		
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withposheadingtype");
 				
 		if ( !Files.isReadable(indexPath)) {
 			System.out.println("the path cannot find");
@@ -129,6 +131,12 @@ public class CreateIndexExtraTopics {
 		doctypeType.setIndexOptions(IndexOptions.DOCS); 
 		doctypeType.setTokenized(false);
 		doctypeType.setStored(true);
+		
+		// set heading filed
+		FieldType headingType = new FieldType();
+		headingType.setIndexOptions(IndexOptions.DOCS); 
+		headingType.setTokenized(false);
+		headingType.setStored(true);
 				
 		// write
 		Document doc = new Document();
@@ -136,6 +144,7 @@ public class CreateIndexExtraTopics {
 		doc.add(new Field("title", article.getTitle(), titleType));
 		doc.add(new Field("content", article.getArticleAbstract(), contentType));
 		doc.add(new Field("doctype", article.getType(), doctypeType));
+		doc.add(new Field("heading", article.getHeading(), headingType));
 		
 		inWriter.addDocument(doc);
 		inWriter.commit();
