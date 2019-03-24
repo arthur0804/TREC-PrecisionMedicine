@@ -46,7 +46,7 @@ public class BM25Retrieval {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar22testboostdisease.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23testnewexpansion.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
 		//String header2 = "TOPIC_NO" + "\t" + "Q0" + "\t" + "ID" + "\t" + "RANK" + "\t" + "SCORE" + "\t" + "RUN_NAME" + "\t" + "Title" + "\t" + "Content" + "\n";
 		//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResultwithcontent.txt"), header2.getBytes(), StandardOpenOption.APPEND);
@@ -96,7 +96,7 @@ public class BM25Retrieval {
 				
 				// print retrieval result
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar22testboostdisease.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar23testnewexpansion.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 				
 				//String NEW_RECORD2 = TOPIC_NO + "\t" + Q0 + "\t" + ID + "\t" + RANK + "\t" + SCORE + "\t" + RUN_NAME + "\t" + titletext + "\t" + contenttext + "\n";
 				//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResultwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);
