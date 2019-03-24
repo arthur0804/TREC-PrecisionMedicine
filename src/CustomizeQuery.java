@@ -267,7 +267,7 @@ public class CustomizeQuery {
 						
 						// print retrieval result
 						String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-						Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/combination/A" + booster +".txt"), header.getBytes(), StandardOpenOption.APPEND);
+						Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/combination/A" + booster +".txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 						
 						//String NEW_RECORD2 = TOPIC_NO + "\t" + Q0 + "\t" + ID + "\t" + RANK + "\t" + SCORE + "\t" + RUN_NAME + "\t" + titletext + "\t" + contenttext + "\n";
 						//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/testResultwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);

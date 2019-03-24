@@ -115,6 +115,43 @@ public class XMLParser {
         return ArticleidAndType;
     }
     
+    // return a HashMap of <ID, Heading>
+    public static HashMap<String , String> ReadIDAndHeading(String url) throws DocumentException{
+    	// create a HashMap to store the <id, string> value
+        HashMap < String, String > ArticleidAndHeading = new HashMap();
+
+        File inputFile = new File(url);
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inputFile);
+        Element rootElement = document.getRootElement();
+
+        // store all the first child
+        List allElements = rootElement.elements("PubmedArticle");
+        for (int i = 0; i < allElements.size(); i++) {
+        	Element element = (Element) allElements.get(i);
+            Element element_id = element.element("MedlineCitation").element("PMID");
+        	
+            if (element.element("MedlineCitation").element("Article").element("PublicationTypeList") == null) {
+                // add into the HashMap
+                String empty_type = "";
+                ArticleidAndHeading.put(element_id.getText(), empty_type);
+            }else {
+            	// some articles have several "AbstractText" tags
+                Element element_type = element.element("MedlineCitation").element("Article").element("PublicationTypeList");
+                List type_list = element_type.elements("PublicationType");
+                String type_text = "";
+                for(int j = 0; j < type_list.size(); j ++) {
+            		Element type_parts = (Element) type_list.get(j);
+            		type_text += type_parts.getText() + ",";
+            	}
+                type_text = type_text.substring(0, type_text.length()-1);
+                ArticleidAndHeading.put(element_id.getText(), type_text);
+            }
+        	
+        }   
+        return ArticleidAndHeading;
+    }
+    
     // return a String List of genes
     public static ArrayList < String > ReadGenes(String url) throws DocumentException {
         // create an Arraylist to store queries

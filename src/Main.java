@@ -22,11 +22,7 @@ import org.dom4j.DocumentException;
 public class Main {
 	
 	public static void RunSearching() throws DocumentException, IOException, ParseException {
-		
-		String acronym_boosts[] = {"1", "3", "5", "7"};
-		
-		for(String s : acronym_boosts) {
-			
+
 			String filePath_queries = "/proj/wangyue/trec/pm/topics_qrel/2018/topics2018.xml";
 			
 			// read genes and diseases
@@ -44,7 +40,7 @@ public class Main {
 			
 			final String disease_boost = "^0.1"; 
 			final String gene_boost = "^0.3";
-			String acronym_boost = "^0." + s;
+			final String acronym_boost = "^0.5";
 			
 			ArrayList<String> queries = new ArrayList<>();
 			for(int m = 0; m < genes.size(); m++) {
@@ -99,9 +95,9 @@ public class Main {
 						
 				queries.add(query);
 			}
-			//BM25Retrieval.SearchMethod(queries);
-			CustomizeQuery.SearchMethodWithAcronym(queries, s);
-		}
+			
+			BM25Retrieval.SearchMethod(queries);
+
 	}
 
 	public static void RunIndexing() throws IOException, DocumentException {

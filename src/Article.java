@@ -3,16 +3,21 @@ public class Article {
 	private String title;
 	private String ArticleAbstract;
 	private String type;
-	
-	public Article() {
-		// TODO Auto-generated constructor stub
-	}
+	private String heading;
 	
 	public Article(String id, String ArticleAbstract, String title, String type) {
 		this.id = id;
 		this.ArticleAbstract = ArticleAbstract;
 		this.title = title;
 		this.type = type;
+	}
+	
+	public Article(String id, String ArticleAbstract, String title, String type, String heading) {
+		this.id = id;
+		this.ArticleAbstract = ArticleAbstract;
+		this.title = title;
+		this.type = type;
+		this.heading = heading;
 	}
 
 	public String getId() {
@@ -30,6 +35,10 @@ public class Article {
 	public String getType() {
 		return type;
 	}
+	
+	public String getHeading() {
+		return this.heading;
+	}
 
 	public void setId(String id) {
 		this.id = id;
@@ -45,6 +54,10 @@ public class Article {
 	
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public void setHeading(String heading) {
+		this.heading = heading;
 	}
 	
 }
