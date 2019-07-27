@@ -49,7 +49,7 @@ public class GetPublicationTypes {
                     types_set.add(type_parts.getText());
                 }
             }
-
+ 
 
         }
 

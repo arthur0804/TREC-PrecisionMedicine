@@ -28,7 +28,7 @@ import org.apache.lucene.store.FSDirectory;
 public class BM25Retrieval {
 	public static void SearchMethod(ArrayList<String> queries) throws ParseException, IOException {
 		// set directory of indexes
-		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withpos");
+		Path indexPath = Paths.get("/proj/wangyue/jiamingfolder/index_BM25_withposheadingtype");
 		Directory dir = FSDirectory.open(indexPath);
 						
 		// create index reader
@@ -46,10 +46,10 @@ public class BM25Retrieval {
 		// execute queries and write the result into a text file			
 		// create headers in the result log
 		String header = "TOPIC_NO" + " " + "Q0" + " " + "ID" + " " + "RANK" + " " + "SCORE" + " " + "RUN_NAME" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24test.txt"), header.getBytes(), StandardOpenOption.APPEND);
+		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Apr10test.txt"), header.getBytes(), StandardOpenOption.APPEND);
 		
-		String header2 = "TOPIC_NO" + "\t" + "Q0" + "\t" + "ID" + "\t" + "RANK" + "\t" + "SCORE" + "\t" + "RUN_NAME" + "\t" + "Title" + "\t" + "Content" + "\t" + "Heading" + "\t" + "Type" + "\n";
-		Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24testwithcontent.txt"), header2.getBytes(), StandardOpenOption.APPEND);
+		//String header2 = "TOPIC_NO" + "\t" + "Q0" + "\t" + "ID" + "\t" + "RANK" + "\t" + "SCORE" + "\t" + "RUN_NAME" + "\t" + "Title" + "\t" + "Content" + "\t" + "Heading" + "\t" + "Type" + "\n";
+		//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24testwithcontent.txt"), header2.getBytes(), StandardOpenOption.APPEND);
 		
 		// title query
 		QueryParser titleQP = new QueryParser("title", analyzer);
@@ -96,10 +96,10 @@ public class BM25Retrieval {
 				
 				// print retrieval result
 				String NEW_RECORD = TOPIC_NO + " " + Q0 + " " + ID + " " + RANK + " " + SCORE + " " + RUN_NAME + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24test.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Apr10test.txt"), NEW_RECORD.getBytes(), StandardOpenOption.APPEND);
 				
-				String NEW_RECORD2 = TOPIC_NO + "\t" + Q0 + "\t" + ID + "\t" + RANK + "\t" + SCORE + "\t" + RUN_NAME + "\t" + titletext + "\t" + contenttext + "\t" + Heading + "\t" + Type + "\n";
-				Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24testwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);
+				//String NEW_RECORD2 = TOPIC_NO + "\t" + Q0 + "\t" + ID + "\t" + RANK + "\t" + SCORE + "\t" + RUN_NAME + "\t" + titletext + "\t" + contenttext + "\t" + Heading + "\t" + Type + "\n";
+				//Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/searchresultandlog/sometests/Mar24testwithcontent.txt"), NEW_RECORD2.getBytes(), StandardOpenOption.APPEND);
 									
 				rank ++;
 				// end of the loop for 1k documents

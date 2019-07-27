@@ -34,7 +34,6 @@ public class Main {
 			ArrayList<String> expanded_diseases = XMLParser.ReadExpandedDiseases(filePath_expansion);	
 			ArrayList<String> expanded_genes = XMLParser.ReadExpandedGenes(filePath_expansion);	
 			
-			
 			String filePath_acronym = "/pine/scr/j/i/jiaming/expansionterms/acronyms.xml";
 			ArrayList<String> diseases_acronym = XMLParser.ReadDiseases(filePath_acronym);
 			
@@ -64,7 +63,7 @@ public class Main {
 					disease_expansion_boosted = disease_expansion_boosted.trim();
 					query += " " + disease_expansion_boosted ;
 				}
-				
+				 
 				/*
 				* Gene part
 				*/
@@ -96,6 +95,7 @@ public class Main {
 				queries.add(query);
 			}
 			
+			
 			BM25Retrieval.SearchMethod(queries);
 	}
 
@@ -126,25 +126,6 @@ public class Main {
 		 }	
 		 String total = i + " XML files has been indexed \n";
 		 Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), total.getBytes(), StandardOpenOption.APPEND);
-		 
-		 
-		 // Create index for extra topics
-		 // 1.1 get file path of collections3
-		 String filePath_collection2 = "/proj/wangyue/trec/pm/collection/extra_abstracts";
-		
-		 // 1.2 get all the URLs in this file path
-		 ArrayList<String> filePathtList2 = GetFilePath.GetFilePaths(filePath_collection2);
-	
-		 int j = 0;
-		 // 1.3 iterate through the list and create index for each file
-		 for(String str2:filePathtList2) {
-			CreateIndexExtraTopics.CreateIndexMethod(str2);
-			j++;
-		 }	
-		 
-		 // check the result
-		 String log = j + " extra topics are indexed" + "\n";
-		 Files.write(Paths.get("/proj/wangyue/jiamingfolder/dat/indexinglog.txt"), log.getBytes(), StandardOpenOption.APPEND);	
 	}
 	
 	public static void main(String[] args) throws IOException, DocumentException, ParseException {
